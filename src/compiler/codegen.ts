@@ -11,7 +11,7 @@ export default function (tokens: string[], filePath: string) {
     for (let i = 0; i < tokens.length; i++) {
         let token: string[] = tokens[i].split(": ")
 
-        console.log(token)
+        //console.log(token)
         let type: string = ""
         let value: string = ""
 
@@ -19,7 +19,7 @@ export default function (tokens: string[], filePath: string) {
             type = token[0]
             value = token[1]
 
-            console.log(type, value)
+            //console.log(type, value)
         } else { // The token does not have a value
             type = token[0]
         }
@@ -58,6 +58,7 @@ export default function (tokens: string[], filePath: string) {
     }
 
     //result.push("}")
-    Bun.write(filePath, result.join(" "))
+    let code = result.join(" ").replaceAll("\n ", "\n")
+    Bun.write(filePath, code)
     return true
 }

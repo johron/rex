@@ -1,2 +1,1 @@
-let x = 5 
- let y = 7 + 3 + 90
+let x = 3 let y = 2

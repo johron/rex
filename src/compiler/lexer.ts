@@ -1,7 +1,9 @@
 import isNumeric from "../util/isNumeric"
 
 export default function (source: string) {
-    let lines = source.replaceAll("\n", "Newline ").split("\r")
+    source = source.replaceAll("\r", "")
+    const lines = source.split("\n")
+
     let tokenArray: string[] = []
 
     for (let i = 0; i < lines.length; i++) {
@@ -27,7 +29,6 @@ export default function (source: string) {
                 word = "DivisionOperator"
             } else if (word == "->") {
                 word = "CallOperator"
-            } else if (word == "Newline") {
             } else if (word == "print") {
                 word = "PrintFunction"
             } else {
@@ -48,5 +49,6 @@ export default function (source: string) {
         }
     }
 
+    console.log(tokenArray)
     return tokenArray
 }
