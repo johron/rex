@@ -1,0 +1,7 @@
+new add = x, y {
+    print = x + y
+}
+
+new z = 5
+
+print = z
