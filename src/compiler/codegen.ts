@@ -9,16 +9,15 @@ export default function (tokens: string[], filePath: string) {
     //result += "int main(int argc, char* argv[]) {\n"
 
     for (let i = 0; i < tokens.length; i++) {
-        let token: string[] = tokens[i].split(": ")
+        let token: string[] = tokens[i].split(": ", 1)
+        console.log(token)
 
-        //console.log(token)
         let type: string = ""
         let value: string = ""
 
         if (token.length > 1) { // The token has a value
             type = token[0]
             value = token[1]
-
             //console.log(type, value)
         } else { // The token does not have a value
             type = token[0]
@@ -60,5 +59,6 @@ export default function (tokens: string[], filePath: string) {
     //result.push("}")
     let code = result.join(" ").replaceAll("\n ", "\n")
     Bun.write(filePath, code)
+    //console.log(result)
     return true
 }
