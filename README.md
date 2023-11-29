@@ -1,6 +1,11 @@
 # badger
 - hobbyist compiler project. the end goal is to write write the compiler in itself.
 
+Install dependencies:
+```bash
+bun install
+```
+
 To run:
 
 ```bash

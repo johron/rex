@@ -40,6 +40,10 @@ export default function (source: string) {
                     }
                 } else if (word.startsWith("\"") && word.endsWith("\"")) {
                     word = "String: " + word
+                } else if (word == "\n") {
+                    word = "Newline"
+                } else if (word.includes("\n")) {
+                    words.push()
                 } else {
                     word = "Unkown: " + word
                 }
