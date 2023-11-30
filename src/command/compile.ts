@@ -1,5 +1,5 @@
-import codegen from "../compiler/codegen";
-import lexer from "../compiler/lexer";
+import codegen from "../compiler/writing";
+import lexer from "../compiler/reading";
 
 export default async function(args: string[]) {
     const path = args[1]
