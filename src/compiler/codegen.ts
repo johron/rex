@@ -5,15 +5,18 @@ export default function (tokens: string[], filePath: string) {
 
     let result: string[] = []
 
+    console.log(tokens)
+
     //result += "#include <stdio.h>\n"
     //result += "int main(int argc, char* argv[]) {\n"
 
     for (let i = 0; i < tokens.length; i++) {
-        let token: string[] = tokens[i].split(": ", 1)
+        let token = tokens[i]
         console.log(token)
 
-        let type: string = ""
-        let value: string = ""
+        let [type, ...value] = token.split(': ')
+
+        value = value.join(": ")
 
         if (token.length > 1) { // The token has a value
             type = token[0]

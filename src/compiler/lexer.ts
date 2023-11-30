@@ -64,18 +64,15 @@ export default function (source: string) {
                     for (let k = j; k < words.length; k++) {
                         stringIndexes.push(k)
                         newWordArr.push(words[k])
-                        if (words[k].endsWith("\"")) break
+                        if (words[k].endsWith("\"")) {
+                            j += (k - j)
+                            break
+                        }
                     }
 
                     word = "String: " + newWordArr.join(" ")
                 } else {
-                    /*if (!stringIndexes.includes(j)) {
-                        word = "Unkown: " + word
-                    }*/
-
-                    if (words[j - 1].includes(word[j])) {
-                        console.log("si")
-                    }
+                    word = "Unkown: " + word
                 }
             }
     
@@ -83,6 +80,6 @@ export default function (source: string) {
         }
     }
 
-    console.log(tokenArray)
+    //console.log(tokenArray)
     return tokenArray
 }
