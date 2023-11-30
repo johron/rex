@@ -1,1 +1,3 @@
-new x = "Hello World!"
+new hello = "Hello,"
+new world = "World!"
+print -> hello + " " + world

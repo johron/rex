@@ -5,26 +5,20 @@ export default function (tokens: string[], filePath: string) {
 
     let result: string[] = []
 
-    console.log(tokens)
+    //console.log(tokens)
 
     //result += "#include <stdio.h>\n"
     //result += "int main(int argc, char* argv[]) {\n"
 
     for (let i = 0; i < tokens.length; i++) {
         let token = tokens[i]
-        console.log(token)
+        //console.log(token)
 
-        let [type, ...value] = token.split(': ')
+        let [type, ...rest] = token.split(': ')
 
-        value = value.join(": ")
+        let value = rest.join(": ")
 
-        if (token.length > 1) { // The token has a value
-            type = token[0]
-            value = token[1]
-            //console.log(type, value)
-        } else { // The token does not have a value
-            type = token[0]
-        }
+        console.log(type, value)
 
         if (type == "DeclarationOperator") {
             result.push("let")
@@ -52,6 +46,8 @@ export default function (tokens: string[], filePath: string) {
             } else if (type == "Float") {
                 result.push(value)
             } else if (type == "String") {
+                result.push(value)
+            } else if (type == "Variable") {
                 result.push(value)
             } else {
                 result.push(`/*Unknown ${type} ${value}`)

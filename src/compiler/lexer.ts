@@ -72,7 +72,7 @@ export default function (source: string) {
 
                     word = "String: " + newWordArr.join(" ")
                 } else {
-                    word = "Unkown: " + word
+                    word = "Variable: " + word
                 }
             }
     
@@ -80,6 +80,6 @@ export default function (source: string) {
         }
     }
 
-    //console.log(tokenArray)
+    console.log(tokenArray)
     return tokenArray
 }
