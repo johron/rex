@@ -7,8 +7,9 @@ export default function (tokens: string[], filePath: string) {
 
     console.log(tokens)
 
-    result += "#include <stdio.h>\n"
-    result += "int main(int argc, char* argv[]) {\n"
+    result += "package main\n"
+    result += "import \"fmt\""
+    result += "func main() {"
 
     for (let i = 0; i < tokens.length; i++) {
         let token = tokens[i]
