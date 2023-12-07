@@ -6,7 +6,7 @@ export default async function(args: string[]) {
     const file = Bun.file(path)
 
     if (!await file.exists()) {
-        console.error("badger: file not found")
+        console.error("file not found")
         process.exit(1)
     }
 

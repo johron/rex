@@ -10,7 +10,7 @@ cli
     .version(version);
 
 cli.command('compile')
-    .description('Compile bader source code')
+    .description('Compile vex source code')
     .argument('<path>', 'file path of source code')
     .action(() => {
         compile(cli.args)
