@@ -1,5 +1,4 @@
-import codegen from "../compiler/writing";
-import lexer from "../compiler/reading";
+import codegen from "../compiler/codegen";
 
 export default async function(args: string[]) {
     const path = args[1]
@@ -10,7 +9,5 @@ export default async function(args: string[]) {
         process.exit(1)
     }
 
-    const source = file.text()
-    const tokens = lexer(await source)
-    const success = codegen(tokens, path.split(".")[0])
+    codegen(await file.text())
 }
