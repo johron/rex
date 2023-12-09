@@ -139,6 +139,6 @@ export default function (line: string) {
             }
         }
     }
-    
+
     return tokenArr
 }
