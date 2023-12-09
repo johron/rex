@@ -19,9 +19,16 @@ export enum TokenType {
     MINUS = "MINUS",
     ASTERISK = "ASTERISK",
     SLASH = "SLASH",
+    GREATER = "GREATER",
+    LESS = "LESS",
     EQUALS = "EQUALS",
+    NOT = "NOT",
     DOUBLEEQUALS = "DOUBLEEQUALS",
+    GREATEREQUALS = "GREATEREQUALS",
+    LESSEQUALS = "LESSEQUALS",
+    NOTEQUALS = "NOTEQUALS",
     COMMA = "COMMA",
+    PERIOD = "PERIOD",
     SEMICOLON = "SEMICOLON",
     LPAREN = "LPAREN",
     RPAREN = "RPAREN",
@@ -32,12 +39,15 @@ export const SYMBOLS = [
     "-",
     "*",
     "/",
+    ">",
+    "<",
     "=",
-    "==",
     ",",
+    ".",
     ";",
     "(",
     ")",
+    "!",
 ]
 
 export default function (line: string) {
@@ -47,7 +57,9 @@ export default function (line: string) {
     for (let i = 0; i < charArr.length; i++) {
         const c = charArr[i]
 
-        if (c == "+") {
+        if (c == "/" && charArr[i + 1] == "/") {
+            return []
+        } else if (c == "+") {
             tokenArr.push(TokenType.PLUS)
         } else if (c == "-") {
             tokenArr.push(TokenType.MINUS)
@@ -55,16 +67,34 @@ export default function (line: string) {
             tokenArr.push(TokenType.ASTERISK)
         } else if (c == "/") {
             tokenArr.push(TokenType.SLASH)
+        } else if (c == "=" && charArr[i + 1] == "=") {
+            tokenArr.push(TokenType.DOUBLEEQUALS)
+            i += 1
+        } else if (c == ">" && charArr[i + 1] == "=") {
+            tokenArr.push(TokenType.GREATEREQUALS)
+            i += 1
+        } else if (c == "<" && charArr[i + 1] == "=") {
+            tokenArr.push(TokenType.LESSEQUALS)
+            i += 1
+        } else if (c == "!" && charArr[i + 1] == "=") {
+            tokenArr.push(TokenType.NOTEQUALS)
+            i += 1
         } else if (c == "=") {
             tokenArr.push(TokenType.EQUALS)
-        } else if (c == "==") {
-            tokenArr.push(TokenType.DOUBLEEQUALS)
+        } else if (c == ">") {
+            tokenArr.push(TokenType.GREATER)
+        } else if (c == "<") {
+            tokenArr.push(TokenType.LESS)
+        } else if (c == "!") {
+            tokenArr.push(TokenType.NOT)
         } else if (c == ",") {
             tokenArr.push(TokenType.SEMICOLON)
         } else if (c == "(") {
             tokenArr.push(TokenType.LPAREN)
         } else if (c == ")") {
             tokenArr.push(TokenType.RPAREN)
+        } else if (c == ".") {
+            tokenArr.push(TokenType.PERIOD)
         } else if (c == "i" && charArr[i+1] == "f") {
             tokenArr.push(TokenType.IF)
             i += 1
@@ -83,16 +113,20 @@ export default function (line: string) {
         } else {
             if (isNumeric(c)) {
                 let number = ""
-                let j = i 
+                let j = i
+                let broke = false
                 
                 for (j; j < charArr.length; j++) {
-                    if (isNumeric(charArr[j])) {
+                    if (isNumeric(charArr[j]) || charArr[j] == ".") {
                         number += charArr[j]
+                    } else {
+                        broke = true
                         break
                     }
                 }
 
-                i += j - i
+                if (broke) i += (j - i) - 1
+                else i += j - i
                 tokenArr.push(TokenType.NUMBER + ":" + number)
             } else if (c == "\"") {
                 let string = "\""

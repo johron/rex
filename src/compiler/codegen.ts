@@ -7,5 +7,9 @@ export default function (source: string) {
     for (let i = 0; i < sourceArr.length; i++) {
         if (sourceArr[i].length == 0) continue
         const tokens = parser(sourceArr[i])
+
+        if (tokens.length == 0) continue
+
+        console.log(tokens)
     }
 }
