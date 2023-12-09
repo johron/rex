@@ -1,7 +1,7 @@
 {
   "name": "vex",
-  "description": "hobby compiler",
-  "version": "0.0.4",
+  "description": "The Vex hobby compiler",
+  "version": "0.0.5",
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
