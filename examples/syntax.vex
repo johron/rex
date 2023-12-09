@@ -1,0 +1,4 @@
+func greet() open;
+    val name = "jeff";
+    sout("Hello, $name!"); 
+close;
