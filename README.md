@@ -13,7 +13,7 @@ bun run .
 ```
 
 ## To-do list
-- [x] Lexer
+- [ ] Lexer
 - [ ] Parser
 - [ ] Code generation
 - [ ] Write compiler in itself
