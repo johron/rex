@@ -1,12 +1,12 @@
 # Vex
 Vex is a hobby compiler for learning more about string manipulation and error handling. I would hope to rewrite the language in itself when the base compiler is finished. Currently the compiler is being written in TypeScript using the Bun Runtime.
 
-## Installing bun dependencies
+## Installing dependencies
 ```bash
 bun install
 ```
 
-## Running with bun
+## Running
 `View help message`
 ```bash
 bun run .
