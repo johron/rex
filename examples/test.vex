@@ -1,4 +1,3 @@
-// Test program in Vexlang
-
-val x = 5;
-val y = 10;
+if (5 == 5) open;
+    5 + 5;
+close;

@@ -8,6 +8,7 @@ export enum TokenType {
     IF = "IF",
     OPEN = "OPEN",
     CLOSE = "CLOSE",
+    RETURN = "RETURN",
     
     // Literals
     LITERAL = "LITERAL",
@@ -88,7 +89,7 @@ export default function (line: string) {
         } else if (c == "!") {
             tokenArr.push(TokenType.NOT)
         } else if (c == ",") {
-            tokenArr.push(TokenType.SEMICOLON)
+            tokenArr.push(TokenType.COMMA)
         } else if (c == "(") {
             tokenArr.push(TokenType.LPAREN)
         } else if (c == ")") {
@@ -110,6 +111,9 @@ export default function (line: string) {
         } else if (c == "c" && charArr[i+1] == "l" && charArr[i+2] == "o" && charArr[i+3] == "s" && charArr[i+4] == "e") {
             tokenArr.push(TokenType.CLOSE)
             i += 4
+        } else if (c == "r" && charArr[i+1] == "e" && charArr[i+2] == "t" && charArr[i+3] == "u" && charArr[i+4] == "r" && charArr[i+5] == "n") {
+            tokenArr.push(TokenType.RETURN)
+            i += 5
         } else {
             if (isNumeric(c)) {
                 let number = ""
