@@ -1,15 +1,39 @@
 import SyntaxError from "../error/SyntaxError";
 import lexer, { TokenType } from "./lexer";
 
-export default function (source: string) {
-    source = source.replaceAll(/[\r\n]+(?=(?:(?:[^"]*"){2})*[^"]*$)/g, '');
-    let lines = source.split(/;(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-    const tokensArr: string[][] = []
+async function checkForClose(lineIndex: number, tokensArr: string[][]) {
+    for (let k = lineIndex; k < tokensArr.length; k++) {
+        if (tokensArr[k].includes("CLOSE")) {
+            return true
+        }
+    }
+
+    return false;
+}
+
+async function getTokensArr(lines: string[]) {
+    let ret: string[][] = []
 
     for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
-        const tokens = lexer(lines[lineIndex])
+        ret.push(lexer(lines[lineIndex]))
+    }
 
-        for (let i = 0; i < tokens.length; i++) {
+    return ret
+}
+
+export default async function (source: string) {
+    source = source.replaceAll(/[\r\n]+(?=(?:(?:[^"]*"){2})*[^"]*$)/g, '');
+    let lines = source.split(/;(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+    //console.log(lines)
+    const tokensArr: string[][] = await getTokensArr(lines)
+    console.log(tokensArr)
+
+    for (let lineIndex = 0; lineIndex < tokensArr.length; lineIndex++) {
+        const tokens = tokensArr[lineIndex]
+        //console.log(lineIndex, tokensArr.length)
+        
+
+        for (let i = 0; i < tokens.length; i += 1) {
             if (tokens[i] == TokenType.VAL) {
                 if (i != 0) {
                     new SyntaxError("Variable declaration keyword(val) placed incorrectly.", lines[lineIndex])
@@ -43,22 +67,8 @@ export default function (source: string) {
                     new SyntaxError("If statement(if) requires an open keyword.", lines[lineIndex])
                 }
 
-                let k = i
-                let broke = false
-                console.log(tokensArr)
-                for (k; k < tokensArr.length; k++) {
-                    console.log("y")
-                    for (let kk = 0; kk < tokensArr[k].length; kk++) {
-                        console.log(tokens[kk])
-                        if (tokensArr[k][kk] == TokenType.CLOSE) {    
-                            broke = true              
-                            break
-                        }
-                    }
-                }
-
-                if (broke == false) {
-                    new SyntaxError("If keyword(if) requires a close keyword.", lines[lineIndex])
+                if (await checkForClose(lineIndex, tokensArr) == false) {
+                    new SyntaxError("If statements require a close keyword after function contents.", lines[lineIndex])
                 }
             } else if (tokens[i] == TokenType.FUNC) {
                 if (i != 0) {
@@ -79,6 +89,18 @@ export default function (source: string) {
 
                 if (tokens[tokens.length - 1] != TokenType.OPEN) { // -1 because lists start at 0
                     new SyntaxError("Function declaration keyword(func) requires an open keyword.", lines[lineIndex])
+                }
+
+                let k = i
+                let broke = false
+                for (k; tokens.length; k++) {
+                    if (tokens[k] == TokenType.CLOSE) {
+                        broke = true
+                    }
+                }
+
+                if (broke != true) {
+                    new SyntaxError("Functions require a close keyword after function contents.", lines[lineIndex])
                 }
             } else if (tokens[i].includes(TokenType.NUMBER)) {
                 if (tokens[i].replace(".", "").includes(".")) {
