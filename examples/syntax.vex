@@ -1,4 +1,11 @@
-func greet() open;
-    val name = "jeff";
+// syntax for this language;
+
+val name = "jeff";
+
+func greet(name) {;
     sout("Hello, $name!"); 
-close;
+};
+
+if (name == "jeff") {;
+    greet(name);
+};

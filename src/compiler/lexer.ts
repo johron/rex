@@ -1,3 +1,12 @@
+/*
+ * This file is a component of the Vex programming language (https://github.com/johanrong/vex/).
+ * Copyright (c) 2023 Johan Rong and contributors.
+ *
+ * This source code is governed by the terms of the GNU General Public
+ * License, version 3. If a copy of the GPL was not included with this
+ * file, you can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
+ */
+
 import isAlpha from "../util/isAlpha"
 import isNumeric from "../util/isNumeric"
 
@@ -48,8 +57,22 @@ export const SYMBOLS = [
     ";",
     "(",
     ")",
+    "{",
+    "}",
     "!",
 ]
+
+function keyword(check: string, fromArr: string[], startIndex: number) {
+    let checkArr = check.split("")
+
+    for (let i = 0; i < checkArr.length; i++) {
+        if (fromArr[startIndex + i] != checkArr[i]) {
+            return false
+        }
+    }
+
+    return true
+}
 
 export default function (line: string) {
     const charArr: string[] = line.split("")
@@ -58,7 +81,7 @@ export default function (line: string) {
     for (let i = 0; i < charArr.length; i++) {
         const c = charArr[i]
 
-        if (c == "/" && charArr[i + 1] == "/") {
+        if (keyword("//", charArr, i)) {
             return []
         } else if (c == "+") {
             tokenArr.push(TokenType.PLUS)
@@ -68,16 +91,16 @@ export default function (line: string) {
             tokenArr.push(TokenType.ASTERISK)
         } else if (c == "/") {
             tokenArr.push(TokenType.SLASH)
-        } else if (c == "=" && charArr[i + 1] == "=") {
+        } else if (keyword("==", charArr, i)) {
             tokenArr.push(TokenType.DOUBLEEQUALS)
             i += 1
-        } else if (c == ">" && charArr[i + 1] == "=") {
+        } else if (keyword(">=", charArr, i)) {
             tokenArr.push(TokenType.GREATEREQUALS)
             i += 1
-        } else if (c == "<" && charArr[i + 1] == "=") {
+        } else if (keyword("<=", charArr, i)) {
             tokenArr.push(TokenType.LESSEQUALS)
             i += 1
-        } else if (c == "!" && charArr[i + 1] == "=") {
+        } else if (keyword("!=", charArr, i)) {
             tokenArr.push(TokenType.NOTEQUALS)
             i += 1
         } else if (c == "=") {
@@ -94,24 +117,22 @@ export default function (line: string) {
             tokenArr.push(TokenType.LPAREN)
         } else if (c == ")") {
             tokenArr.push(TokenType.RPAREN)
+        } else if (c == "{") {
+            tokenArr.push(TokenType.OPEN)
+        } else if (c == "}") {
+            tokenArr.push(TokenType.CLOSE)
         } else if (c == ".") {
             tokenArr.push(TokenType.PERIOD)
-        } else if (c == "i" && charArr[i+1] == "f") {
+        } else if (keyword("if", charArr, i)) {
             tokenArr.push(TokenType.IF)
             i += 1
-        } else if (c == "v" && charArr[i+1] == "a" && charArr[i+2] == "l") {
+        } else if (keyword("val", charArr, i)) {
             tokenArr.push(TokenType.VAL)
             i += 2
-        } else if (c == "f" && charArr[i+1] == "u" && charArr[i+2] == "n" && charArr[i+3] == "c") {
+        } else if (keyword("func", charArr, i)) {
             tokenArr.push(TokenType.FUNC)
             i += 3
-        } else if (c == "o" && charArr[i+1] == "p" && charArr[i+2] == "e" && charArr[i+3] == "n") {
-            tokenArr.push(TokenType.OPEN)
-            i += 3
-        } else if (c == "c" && charArr[i+1] == "l" && charArr[i+2] == "o" && charArr[i+3] == "s" && charArr[i+4] == "e") {
-            tokenArr.push(TokenType.CLOSE)
-            i += 4
-        } else if (c == "r" && charArr[i+1] == "e" && charArr[i+2] == "t" && charArr[i+3] == "u" && charArr[i+4] == "r" && charArr[i+5] == "n") {
+        } else if (keyword("return", charArr, i)) {
             tokenArr.push(TokenType.RETURN)
             i += 5
         } else {

@@ -15,7 +15,7 @@ bun run .
 ## To-do list
 - [x] Comments
 - [x] Parse if statements
-- [ ] Parse functions
+- [x] Parse functions
 - [x] Add float support in lexer
 - [ ] Code generation
 - [ ] Write compiler in itself
