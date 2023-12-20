@@ -1,11 +1,12 @@
 {
   "name": "vex",
   "description": "The Vex hobby compiler",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
-    "start": "bun run ."
+    "start": "bun run .",
+    "compile": "bun run . compile"
   },
   "devDependencies": {
     "bun-types": "latest"

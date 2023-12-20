@@ -1,0 +1,4 @@
+// compact testing;
+
+funcadd(x,y){;valret=x+y;returnret;};
+valx=5;if(x==5){;returntrue};
