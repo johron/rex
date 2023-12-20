@@ -32,7 +32,6 @@ async function checkForClose(lineIndex: number, tokensArr: string[][]) {
     return false
 }
 
-
 export default async function (source: string) {
     source = source.replaceAll(/[\r\n]+(?=(?:(?:[^"]*"){2})*[^"]*$)/g, '')
     let lines = source.split(/;(?=(?:(?:[^"]*"){2})*[^"]*$)/)
@@ -43,12 +42,24 @@ export default async function (source: string) {
         tokensArr.push(lexer(lines[lineIndex]))
     }
 
-    console.log(tokensArr)
-
     for (let lineIndex = 0; lineIndex < tokensArr.length; lineIndex++) {
         const tokens = tokensArr[lineIndex]
 
-        for (let i = 0; i < tokens.length; i += 1) {
+        /*for (let i = 0; i < tokens.length; i++) { // This probably has to be written in another way as if the variable name has multiple keywords in the literal.
+            if (tokens[i] == TokenType.VAL) {
+                if (tokens[i + 1] == TokenType.VAL || tokens[i + 1] == TokenType.FUNC) {
+                    if (tokens[i + 2].includes(TokenType.LITERAL)) {
+                        const lastArr = tokens[i + 2].split(":")
+                        const newLiteral = tokens[i + 1].toLocaleLowerCase() + lastArr[1]
+                        tokens[i + 1] = TokenType.LITERAL + ":" + newLiteral
+                        tokens[i + 2] = ""
+                        console.log(tokens)
+                    }
+                }
+            }
+        }*/
+
+        for (let i = 0; i < tokens.length; i++) {
             if (tokens[i] == TokenType.VAL) {
                 if (i != 0) {
                     throw new SyntaxError("Variable declaration keyword(val) placed incorrectly.", lines[lineIndex])

@@ -7,8 +7,20 @@
  * file, you can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
 
+import { TokenType } from "./lexer"
 import parser from "./parser"
 
-export default function (source: string) {
-    const tokens = parser(source)
+export default async function (source: string) {
+    const tokens = await parser(source)
+    console.log(tokens)
+
+    for (let line = 0; tokens.length; line++) {
+        for (let word = 0; tokens[line].length; word++) {
+            let token = tokens[line][word]
+
+            if (token == TokenType.VAL) {
+                if ()
+            }
+        }
+    }
 }

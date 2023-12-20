@@ -1,5 +1,1 @@
-val x = 5;
-
-if (x == 5) {;
-    sout("math is mathing");
-};
+val name = "jeff";
