@@ -57,7 +57,7 @@ export default async function (source: string) {
                     }
                 }
             }
-        }*/
+        }*/ // trying to check if there is a keyword followed by a litteral to check if the variable name contains a keyword. (val value = x) return: ["VAL", "VAL", "LITERAL:ue", "EQUALS", "LITERAL:x"]
 
         for (let i = 0; i < tokens.length; i++) {
             if (tokens[i] == TokenType.VAL) {

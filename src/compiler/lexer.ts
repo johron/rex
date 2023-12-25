@@ -18,7 +18,7 @@ export enum TokenType {
     OPEN = "OPEN",
     CLOSE = "CLOSE",
     RETURN = "RETURN",
-    
+
     // Literals
     LITERAL = "LITERAL",
     NUMBER = "NUMBER",
@@ -39,9 +39,11 @@ export enum TokenType {
     NOTEQUALS = "NOTEQUALS",
     COMMA = "COMMA",
     PERIOD = "PERIOD",
-    SEMICOLON = "SEMICOLON",
     LPAREN = "LPAREN",
     RPAREN = "RPAREN",
+
+    // Other
+    FUNCTION = "FUNCTION",
 }
 
 export const SYMBOLS = [

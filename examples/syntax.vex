@@ -1,11 +1,15 @@
-// syntax for this language;
+// syntax for this language
 
-val name = "jeff";
+use("stdio.h");
 
 func greet(name) {;
     sout("Hello, $name!"); 
 };
 
-if (name == "jeff") {;
-    greet(name);
+func main() {;
+    val name = "jeff";
+    
+    if (name == "jeff") {;
+        greet(name);
+    };
 };

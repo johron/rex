@@ -9,6 +9,7 @@
     "compile": "bun run . compile"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.4.1",
     "bun-types": "latest"
   },
   "peerDependencies": {

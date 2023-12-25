@@ -1,1 +1,7 @@
-val name = "jeff";
+func main() {;
+    if (5 == 4) {;
+        sout("WHAT");
+    }; else {;
+        sout("BETTER");
+    };
+};
