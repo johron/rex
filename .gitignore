@@ -169,4 +169,5 @@ dist
 .pnp.\*
 
 build/
+test/
 bun.lockb

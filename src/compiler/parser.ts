@@ -8,8 +8,11 @@
  */
 
 import SyntaxError from "../error/SyntaxError";
-import lexer, { TokenType } from "./lexer";
+import TokenType from "../array/TokenType.ts";
+import lexer from "./lexer";
 import getKey from "../util/getKey.ts";
+import StandardFunctions from "../array/StandardFunctions.ts";
+import getValue from "../util/getValue.ts";
 
 async function checkForClose(lineIndex: number, tokensArr: string[][]) {
     let openCount = 0
@@ -41,8 +44,6 @@ export default async function (source: string) {
     for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
         tokensArr.push(lexer(lines[lineIndex]))
     }
-    
-    console.log(tokensArr);
 
     for (let lineIndex = 0; lineIndex < tokensArr.length; lineIndex++) {
         const tokens = tokensArr[lineIndex]
@@ -140,9 +141,15 @@ export default async function (source: string) {
                 if (tokens[i].replace(".", "").includes(".")) {
                     throw new SyntaxError("Float contains multiple periods.", lines[lineIndex])
                 }
+            } else if (getKey(tokens[i]) == TokenType.LITERAL) {
+                if (StandardFunctions.includes(getValue(tokens[i]))) {
+                    tokensArr[lineIndex][i] = TokenType.STDFUNC + ":" + getValue(tokens[i])
+                }
             }
         }
     }
 
+    console.log(tokensArr);
+    
     return tokensArr
 }

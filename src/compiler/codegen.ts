@@ -7,10 +7,10 @@
  * file, you can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-import { TokenType } from "./lexer"
 import parser from "./parser"
 import getValue from "../util/getValue.ts";
 import getKey from "../util/getKey.ts";
+import TokenType from "../array/TokenType.ts";
 
 export default async function (source: string) {
     const lines = await parser(source)
@@ -84,22 +84,28 @@ export default async function (source: string) {
                 result += '<'
             } else if (currentToken == TokenType.EQUALS) {
                 result += '='
-            } else if (currentToken == TokenType.GREATER_EQUALS) {
+            } else if (currentToken == TokenType.GEQUALS) {
                 result += '>='
-            } else if (currentToken == TokenType.LESS_EQUALS) {
+            } else if (currentToken == TokenType.LEQUALS) {
                 result += '<='
-            } else if (currentToken == TokenType.NOT_EQUALS) {
+            } else if (currentToken == TokenType.NEQUALS) {
                 result += '!=='
-            } else if (currentToken == TokenType.DOUBLE_EQUALS) {
+            } else if (currentToken == TokenType.DEQUALS) {
                 result += '==='
-            } else if (currentToken.includes(TokenType.STRING)) {
+            } else if (getKey(currentToken) == TokenType.STRING) {
                 result += currentToken.split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
-            } else if (currentToken.includes(TokenType.INTEGER)) {
+            } else if (getKey(currentToken) == TokenType.INTEGER) {
                 result += currentToken.split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
-            } else if (currentToken.includes(TokenType.FLOAT)) {
+            } else if (getKey(currentToken) == TokenType.FLOAT) {
                 result += currentToken.split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
-            } else if (currentToken.includes(TokenType.LITERAL)) {
+            } else if (getKey(currentToken) == TokenType.LITERAL) {
                 result += currentToken.split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
+            } else if (getKey(currentToken) == TokenType.STDFUNC) {
+                if (getValue(currentToken) == "put") {
+                    result += "printf"
+                } else if (getValue(currentToken) == "take") {
+                    result += "scanf"
+                }
             } else {
                 console.log("Unknown token found during code generation: " + currentToken)
             }

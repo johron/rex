@@ -9,61 +9,8 @@
 
 import isAlpha from "../util/isAlpha"
 import isNumeric from "../util/isNumeric"
-
-export enum TokenType {
-    // Keywords
-    VAL = "VAL",
-    FUNC = "FUNC",
-    IF = "IF",
-    OPEN = "OPEN",
-    CLOSE = "CLOSE",
-    RETURN = "RETURN",
-    USE = "USE",
-
-    // Types
-    TYPE = "TYPE",
-    LITERAL = "LITERAL",
-    INTEGER = "INTEGER",
-    FLOAT = "FLOAT",
-    STRING = "STRING",
-    BOOLEAN = "BOOLEAN",
-
-    // Symbols
-    PLUS = "PLUS",
-    MINUS = "MINUS",
-    ASTERISK = "ASTERISK",
-    SLASH = "SLASH",
-    GREATER = "GREATER",
-    LESS = "LESS",
-    EQUALS = "EQUALS",
-    NOT = "NOT",
-    DOUBLE_EQUALS = "DOUBLE_EQUALS",
-    GREATER_EQUALS = "GREATER_EQUALS",
-    LESS_EQUALS = "LESS_EQUALS",
-    NOT_EQUALS = "NOT_EQUALS",
-    COMMA = "COMMA",
-    PERIOD = "PERIOD",
-    LPAREN = "LPAREN",
-    RPAREN = "RPAREN",
-}
-
-export const SYMBOLS = [
-    "+",
-    "-",
-    "*",
-    "/",
-    ">",
-    "<",
-    "=",
-    ",",
-    ".",
-    ";",
-    "(",
-    ")",
-    "{",
-    "}",
-    "!",
-]
+import TokenType from "../array/TokenType.ts";
+import Symbols from "../array/Symbols.ts";
 
 function keyword(check: string, fromArr: string[], startIndex: number) {
     let checkArr = check.split("")
@@ -97,16 +44,16 @@ export default function (line: string) {
         } else if (c == "/") {
             tokenArr.push(TokenType.SLASH)
         } else if (keyword("==", charArr, i)) {
-            tokenArr.push(TokenType.DOUBLE_EQUALS)
+            tokenArr.push(TokenType.DEQUALS)
             i += 1
         } else if (keyword(">=", charArr, i)) {
-            tokenArr.push(TokenType.GREATER_EQUALS)
+            tokenArr.push(TokenType.GEQUALS)
             i += 1
         } else if (keyword("<=", charArr, i)) {
-            tokenArr.push(TokenType.LESS_EQUALS)
+            tokenArr.push(TokenType.LEQUALS)
             i += 1
         } else if (keyword("!=", charArr, i)) {
-            tokenArr.push(TokenType.NOT_EQUALS)
+            tokenArr.push(TokenType.NEQUALS)
             i += 1
         } else if (c == "=") {
             tokenArr.push(TokenType.EQUALS)
@@ -217,7 +164,7 @@ export default function (line: string) {
 
                 if (charArr[i] == " ") continue
                 if (charArr[i] == undefined) continue
-                if (SYMBOLS.includes(charArr[i])) {
+                if (Symbols.includes(charArr[i])) {
                     i--
                     continue
                 }
