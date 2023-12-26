@@ -1,0 +1,5 @@
+// This code is not finalised and subject to change;
+
+func string example() {;
+    return "Example!";
+};

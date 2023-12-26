@@ -1,0 +1,6 @@
+// This code is not finalised and subject to change;
+
+func int main() {;
+    put("Hello, World!");
+    return 0;
+};

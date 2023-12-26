@@ -9,6 +9,7 @@
 
 import SyntaxError from "../error/SyntaxError";
 import lexer, { TokenType } from "./lexer";
+import getKey from "../util/getKey.ts";
 
 async function checkForClose(lineIndex: number, tokensArr: string[][]) {
     let openCount = 0
@@ -37,14 +38,20 @@ export default async function (source: string) {
     let lines = source.split(/;(?=(?:(?:[^"]*"){2})*[^"]*$)/)
     let tokensArr: string[][] = []
 
-
     for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
         tokensArr.push(lexer(lines[lineIndex]))
     }
+    
     console.log(tokensArr);
 
     for (let lineIndex = 0; lineIndex < tokensArr.length; lineIndex++) {
         const tokens = tokensArr[lineIndex]
+
+        if (tokens.length == 0) {
+            tokensArr.splice(lineIndex, 1)
+            lineIndex--
+            continue
+        }
 
         /*for (let i = 0; i < tokens.length; i++) { // This probably has to be written in another way as if the variable name has multiple keywords in the literal.
             if (tokens[i] == TokenType.VAL) {
@@ -66,11 +73,11 @@ export default async function (source: string) {
                     throw new SyntaxError("Variable declaration keyword(val) placed incorrectly.", lines[lineIndex])
                 }
 
-                if (tokens[i + 1] == undefined || !tokens[i + 1].includes(TokenType.TYPE)) {
+                if (tokens[i + 1] == undefined || getKey(tokens[i + 1]) != TokenType.TYPE) {
                     throw new SyntaxError("Variable declaration keyword(val) must have a type.", lines[lineIndex])
                 }
 
-                if (tokens[i + 2] == undefined || !tokens[i + 2].includes(TokenType.LITERAL)) {
+                if (tokens[i + 2] == undefined || getKey(tokens[i + 2]) != TokenType.LITERAL) {
                     throw new SyntaxError("Variable declaration keyword(val) must have a name.", lines[lineIndex])
                 }
 
@@ -106,11 +113,15 @@ export default async function (source: string) {
                     throw new SyntaxError("Function declaration keyword(func) placed incorrectly.", lines[lineIndex])
                 }
 
-                if (tokens[i + 1] == undefined || !tokens[i + 1].includes(TokenType.LITERAL)) {
+                if (tokens[i + 1] == undefined || getKey(tokens[i + 1]) != TokenType.TYPE) {
+                    throw new SyntaxError("Function declaration keyword(func) must have a type.", lines[lineIndex])
+                }
+                
+                if (tokens[i + 1] == undefined || getKey(tokens[i + 2]) != TokenType.LITERAL) {
                     throw new SyntaxError("Function declaration keyword(func) must have a name.", lines[lineIndex])
                 }
 
-                if (tokens[i + 2] == undefined || tokens[i + 2] != TokenType.LPAREN) {
+                if (tokens[i + 2] == undefined || tokens[i + 3] != TokenType.LPAREN) {
                     throw new SyntaxError("Function declaration keyword(func) requires a left parenthesis.", lines[lineIndex])
                 }
 
@@ -125,7 +136,7 @@ export default async function (source: string) {
                 if (!await checkForClose(lineIndex, tokensArr)) {
                     throw new SyntaxError("Functions require a close keyword after function contents.", lines[lineIndex])
                 }
-            } else if (tokens[i].includes(TokenType.FLOAT)) {
+            } else if (getKey(tokens[i]) == TokenType.FLOAT) {
                 if (tokens[i].replace(".", "").includes(".")) {
                     throw new SyntaxError("Float contains multiple periods.", lines[lineIndex])
                 }

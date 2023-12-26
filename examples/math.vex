@@ -1,0 +1,8 @@
+// This code is not finalised and subject to change;
+
+func int main() {;
+    val int a = 2 + 3;
+    val int b = 3 - 2;
+    val int c = 2 * 3;
+    val float d = 3 / 2;
+};

@@ -9,6 +9,8 @@
 
 import { TokenType } from "./lexer"
 import parser from "./parser"
+import getValue from "../util/getValue.ts";
+import getKey from "../util/getKey.ts";
 
 export default async function (source: string) {
     const lines = await parser(source)
@@ -17,16 +19,43 @@ export default async function (source: string) {
 
     for (let line = 0; line < lines.length; line++) {
         for (let token = 0; token < lines[line].length; token++) {
-            const currentToken = lines[line][token]
+            const currentToken: string = lines[line][token]
 
             if (currentToken == TokenType.VAL) {
-                result += 'let '
+                const type: string = getValue(lines[line][token + 1])
+                if (type == TokenType.INTEGER) {
+                    result += "int "
+                } else if (type == TokenType.FLOAT) {
+                    result += "float "
+                } else if (type == TokenType.STRING) {
+                    result += "char* "
+                } else if (type == TokenType.BOOLEAN) {
+                    result += "bool "
+                }
+                
+                token++
             } else if (currentToken == TokenType.FUNC) {
-                result += "function "
-            } else if (currentToken == TokenType.IF) {
+                const type: string = getValue(lines[line][token + 1])
+                if (type == TokenType.INTEGER) {
+                    result += "int "
+                } else if (type == TokenType.FLOAT) {
+                    result += "float "
+                } else if (type == TokenType.STRING) {
+                    result += "char* "
+                } else if (type == TokenType.BOOLEAN) {
+                    result += "bool "
+                }
+
+                token++
+            } else if (currentToken == TokenType.IF) {1
                 result += 'if'
             } else if (currentToken == TokenType.RETURN) {
                 result += 'return '
+            } else if (currentToken == TokenType.USE) {
+                result += `#include ${getValue(lines[line][token + 1])}`
+                token++
+            } else if (getKey(currentToken) == TokenType.BOOLEAN) {
+                result += getValue(currentToken)
             } else if (currentToken == TokenType.OPEN) {
                 result += "{"
             } else if (currentToken == TokenType.CLOSE) {
@@ -76,9 +105,8 @@ export default async function (source: string) {
             }
         }
 
-        result += "\n"
+        result += ";\n"
     }
-
-    result += "main()"
+    
     return result
 }

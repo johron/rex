@@ -18,6 +18,7 @@ export enum TokenType {
     OPEN = "OPEN",
     CLOSE = "CLOSE",
     RETURN = "RETURN",
+    USE = "USE",
 
     // Types
     TYPE = "TYPE",
@@ -79,6 +80,8 @@ function keyword(check: string, fromArr: string[], startIndex: number) {
 export default function (line: string) {
     const charArr: string[] = line.split("")
     let tokenArr: string[] = []
+    
+    if (charArr.length == 0) return []
 
     for (let i = 0; i < charArr.length; i++) {
         const c = charArr[i]
@@ -146,12 +149,18 @@ export default function (line: string) {
         } else if (keyword("int", charArr, i)) {
             tokenArr.push(TokenType.TYPE + ":" + TokenType.INTEGER)
             i += 2
+        } else if (keyword("bool", charArr, i)) {
+            tokenArr.push(TokenType.TYPE + ":" + TokenType.BOOLEAN)
+            i += 3
         } else if (keyword("float", charArr, i)) {
             tokenArr.push(TokenType.TYPE + ":" + TokenType.FLOAT)
             i += 4
         } else if (keyword("string", charArr, i)) {
             tokenArr.push(TokenType.TYPE + ":" + TokenType.STRING)
             i += 5
+        } else if (keyword("use", charArr, i)) {
+            tokenArr.push(TokenType.USE)
+            i += 2
         } else {
             if (isNumeric(c)) {
                 let number = ""
