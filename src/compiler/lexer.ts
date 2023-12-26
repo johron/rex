@@ -19,10 +19,13 @@ export enum TokenType {
     CLOSE = "CLOSE",
     RETURN = "RETURN",
 
-    // Literals
+    // Types
+    TYPE = "TYPE",
     LITERAL = "LITERAL",
-    NUMBER = "NUMBER",
+    INTEGER = "INTEGER",
+    FLOAT = "FLOAT",
     STRING = "STRING",
+    BOOLEAN = "BOOLEAN",
 
     // Symbols
     PLUS = "PLUS",
@@ -33,17 +36,14 @@ export enum TokenType {
     LESS = "LESS",
     EQUALS = "EQUALS",
     NOT = "NOT",
-    DOUBLEEQUALS = "DOUBLEEQUALS",
-    GREATEREQUALS = "GREATEREQUALS",
-    LESSEQUALS = "LESSEQUALS",
-    NOTEQUALS = "NOTEQUALS",
+    DOUBLE_EQUALS = "DOUBLE_EQUALS",
+    GREATER_EQUALS = "GREATER_EQUALS",
+    LESS_EQUALS = "LESS_EQUALS",
+    NOT_EQUALS = "NOT_EQUALS",
     COMMA = "COMMA",
     PERIOD = "PERIOD",
     LPAREN = "LPAREN",
     RPAREN = "RPAREN",
-
-    // Other
-    FUNCTION = "FUNCTION",
 }
 
 export const SYMBOLS = [
@@ -94,16 +94,16 @@ export default function (line: string) {
         } else if (c == "/") {
             tokenArr.push(TokenType.SLASH)
         } else if (keyword("==", charArr, i)) {
-            tokenArr.push(TokenType.DOUBLEEQUALS)
+            tokenArr.push(TokenType.DOUBLE_EQUALS)
             i += 1
         } else if (keyword(">=", charArr, i)) {
-            tokenArr.push(TokenType.GREATEREQUALS)
+            tokenArr.push(TokenType.GREATER_EQUALS)
             i += 1
         } else if (keyword("<=", charArr, i)) {
-            tokenArr.push(TokenType.LESSEQUALS)
+            tokenArr.push(TokenType.LESS_EQUALS)
             i += 1
         } else if (keyword("!=", charArr, i)) {
-            tokenArr.push(TokenType.NOTEQUALS)
+            tokenArr.push(TokenType.NOT_EQUALS)
             i += 1
         } else if (c == "=") {
             tokenArr.push(TokenType.EQUALS)
@@ -137,6 +137,21 @@ export default function (line: string) {
         } else if (keyword("return", charArr, i)) {
             tokenArr.push(TokenType.RETURN)
             i += 5
+        } else if (keyword("true", charArr, i)) {
+            tokenArr.push(TokenType.BOOLEAN + ":true")
+            i += 3
+        } else if (keyword("false", charArr, i)) {
+            tokenArr.push(TokenType.BOOLEAN + ":false")
+            i += 4
+        } else if (keyword("int", charArr, i)) {
+            tokenArr.push(TokenType.TYPE + ":" + TokenType.INTEGER)
+            i += 2
+        } else if (keyword("float", charArr, i)) {
+            tokenArr.push(TokenType.TYPE + ":" + TokenType.FLOAT)
+            i += 4
+        } else if (keyword("string", charArr, i)) {
+            tokenArr.push(TokenType.TYPE + ":" + TokenType.STRING)
+            i += 5
         } else {
             if (isNumeric(c)) {
                 let number = ""
@@ -154,7 +169,9 @@ export default function (line: string) {
 
                 if (broke) i += (j - i) - 1
                 else i += j - i
-                tokenArr.push(TokenType.NUMBER + ":" + number)
+                
+                if (number.includes(".")) tokenArr.push(TokenType.FLOAT + ":" + number)
+                else tokenArr.push(TokenType.INTEGER + ":" + number)
             } else if (c == "\"") {
                 let string = "\""
                 let j = i + 1

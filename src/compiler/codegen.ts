@@ -17,20 +17,16 @@ export default async function (source: string) {
 
     for (let line = 0; line < lines.length; line++) {
         for (let token = 0; token < lines[line].length; token++) {
-            if (token != 0) {
-                result += " "
-            }
-
             const currentToken = lines[line][token]
 
             if (currentToken == TokenType.VAL) {
-                result += 'let'
+                result += 'let '
             } else if (currentToken == TokenType.FUNC) {
-                result += "function"
+                result += "function "
             } else if (currentToken == TokenType.IF) {
                 result += 'if'
             } else if (currentToken == TokenType.RETURN) {
-                result += 'return'
+                result += 'return '
             } else if (currentToken == TokenType.OPEN) {
                 result += "{"
             } else if (currentToken == TokenType.CLOSE) {
@@ -59,17 +55,19 @@ export default async function (source: string) {
                 result += '<'
             } else if (currentToken == TokenType.EQUALS) {
                 result += '='
-            } else if (currentToken == TokenType.GREATEREQUALS) {
+            } else if (currentToken == TokenType.GREATER_EQUALS) {
                 result += '>='
-            } else if (currentToken == TokenType.LESSEQUALS) {
+            } else if (currentToken == TokenType.LESS_EQUALS) {
                 result += '<='
-            } else if (currentToken == TokenType.NOTEQUALS) {
-                result += '!='
-            } else if (currentToken == TokenType.DOUBLEEQUALS) {
-                result += '=='
+            } else if (currentToken == TokenType.NOT_EQUALS) {
+                result += '!=='
+            } else if (currentToken == TokenType.DOUBLE_EQUALS) {
+                result += '==='
             } else if (currentToken.includes(TokenType.STRING)) {
                 result += currentToken.split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
-            } else if (currentToken.includes(TokenType.NUMBER)) {
+            } else if (currentToken.includes(TokenType.INTEGER)) {
+                result += currentToken.split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
+            } else if (currentToken.includes(TokenType.FLOAT)) {
                 result += currentToken.split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
             } else if (currentToken.includes(TokenType.LITERAL)) {
                 result += currentToken.split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
@@ -82,5 +80,5 @@ export default async function (source: string) {
     }
 
     result += "main()"
-    Bun.write("build/test.js", result)
+    return result
 }

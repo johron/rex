@@ -8,9 +8,11 @@
  */
 
 import codegen from "../compiler/codegen";
+import theTime from "../util/theTime.ts";
 
-export default async function(args: string[]) {
-    const path = args[1]
+export default async function(args: string[], time: number) {
+    const path: string = args[1]
+    const name: string = args[1].split("/")[args.length - 1].split(".")[args.length - 2]
     const file = Bun.file(path)
 
     if (!await file.exists()) {
@@ -18,5 +20,8 @@ export default async function(args: string[]) {
         process.exit(1)
     }
 
-    codegen(await file.text())
+    const result: string = await codegen(await file.text())
+    Bun.write(`build/${name}.js`, result)
+
+    console.log(`[${theTime()}] Completed compilation in ${new Date().getTime() - time}ms.`)
 }

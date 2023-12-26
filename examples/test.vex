@@ -1,7 +1,1 @@
-func main() {;
-    if (5 == 4) {;
-        sout("WHAT");
-    }; else {;
-        sout("BETTER");
-    };
-};
+val int x = 5;

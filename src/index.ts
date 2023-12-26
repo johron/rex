@@ -9,9 +9,13 @@
 
 import { Command } from 'commander'
 import compile from './command/compile'
-const cli = new Command()
-
+import theTime from "./util/theTime.ts";
 const { name, description, version } = require("../package.json")
+
+console.log(`[${theTime()}] Starting compilation.`)
+
+const cli = new Command()
+const time: number = new Date().getTime()
 
 cli
     .name(name)
@@ -22,7 +26,7 @@ cli.command('compile')
     .description('Compile vex source code')
     .argument('<path>', 'file path of source code')
     .action(() => {
-        compile(cli.args)
+        compile(cli.args, time)
     })
 
 cli.parse()
