@@ -22,37 +22,15 @@ export default async function (source: string) {
             const currentToken: string = lines[line][token]
 
             if (currentToken == TokenType.VAL) {
-                const type: string = getValue(lines[line][token + 1])
-                if (type == TokenType.INTEGER) {
-                    result += "int "
-                } else if (type == TokenType.FLOAT) {
-                    result += "float "
-                } else if (type == TokenType.STRING) {
-                    result += "char* "
-                } else if (type == TokenType.BOOLEAN) {
-                    result += "bool "
-                }
-                
-                token++
+                result += "let "
             } else if (currentToken == TokenType.FUNC) {
-                const type: string = getValue(lines[line][token + 1])
-                if (type == TokenType.INTEGER) {
-                    result += "int "
-                } else if (type == TokenType.FLOAT) {
-                    result += "float "
-                } else if (type == TokenType.STRING) {
-                    result += "char* "
-                } else if (type == TokenType.BOOLEAN) {
-                    result += "bool "
-                }
-
-                token++
+                result += "function "
             } else if (currentToken == TokenType.IF) {1
                 result += 'if'
             } else if (currentToken == TokenType.RETURN) {
                 result += 'return '
             } else if (currentToken == TokenType.USE) {
-                result += `#include ${getValue(lines[line][token + 1])}`
+                result += `require(${getValue(lines[line][token + 1])})`
                 token++
             } else if (getKey(currentToken) == TokenType.BOOLEAN) {
                 result += getValue(currentToken)
@@ -101,17 +79,15 @@ export default async function (source: string) {
             } else if (getKey(currentToken) == TokenType.LITERAL) {
                 result += currentToken.split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
             } else if (getKey(currentToken) == TokenType.STDFUNC) {
-                if (getValue(currentToken) == "put") {
-                    result += "printf"
-                } else if (getValue(currentToken) == "take") {
-                    result += "scanf"
+                if (getValue(currentToken) == "echo") {
+                    result += "console.log"
                 }
             } else {
                 console.log("Unknown token found during code generation: " + currentToken)
             }
         }
-
-        result += ";\n"
+        
+        if (line != lines.length - 1) result += "\n"
     }
     
     return result

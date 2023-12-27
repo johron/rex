@@ -93,18 +93,6 @@ export default function (line: string) {
         } else if (keyword("false", charArr, i)) {
             tokenArr.push(TokenType.BOOLEAN + ":false")
             i += 4
-        } else if (keyword("int", charArr, i)) {
-            tokenArr.push(TokenType.TYPE + ":" + TokenType.INTEGER)
-            i += 2
-        } else if (keyword("bool", charArr, i)) {
-            tokenArr.push(TokenType.TYPE + ":" + TokenType.BOOLEAN)
-            i += 3
-        } else if (keyword("float", charArr, i)) {
-            tokenArr.push(TokenType.TYPE + ":" + TokenType.FLOAT)
-            i += 4
-        } else if (keyword("string", charArr, i)) {
-            tokenArr.push(TokenType.TYPE + ":" + TokenType.STRING)
-            i += 5
         } else if (keyword("use", charArr, i)) {
             tokenArr.push(TokenType.USE)
             i += 2
@@ -129,12 +117,12 @@ export default function (line: string) {
                 if (number.includes(".")) tokenArr.push(TokenType.FLOAT + ":" + number)
                 else tokenArr.push(TokenType.INTEGER + ":" + number)
             } else if (c == "\"") {
-                let string = "\""
+                let string = "`"
                 let j = i + 1
                 
                 for (j; j < charArr.length; j++) {
                     if (charArr[j] == "\"") {
-                        string += "\""
+                        string += "`"
                         break
                     }
 

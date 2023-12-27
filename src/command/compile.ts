@@ -21,7 +21,7 @@ export default async function(args: string[], time: number) {
     }
 
     const result: string = await codegen(await file.text())
-    await Bun.write(`build/${name}.c`, result)
+    await Bun.write(`build/${name}.lua`, result)
 
     console.log(`[${theTime()}] Completed compilation in ${new Date().getTime() - time}ms.`)
 }

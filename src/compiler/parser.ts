@@ -74,19 +74,15 @@ export default async function (source: string) {
                     throw new SyntaxError("Variable declaration keyword(val) placed incorrectly.", lines[lineIndex])
                 }
 
-                if (tokens[i + 1] == undefined || getKey(tokens[i + 1]) != TokenType.TYPE) {
-                    throw new SyntaxError("Variable declaration keyword(val) must have a type.", lines[lineIndex])
-                }
-
-                if (tokens[i + 2] == undefined || getKey(tokens[i + 2]) != TokenType.LITERAL) {
+                if (tokens[i + 1] == undefined || getKey(tokens[i + 1]) != TokenType.LITERAL) {
                     throw new SyntaxError("Variable declaration keyword(val) must have a name.", lines[lineIndex])
                 }
 
-                if (tokens[i + 3] == undefined || tokens[i + 3] != TokenType.EQUALS) {
+                if (tokens[i + 2] == undefined || tokens[i + 2] != TokenType.EQUALS) {
                     throw new SyntaxError("Variable declaration keyword(val) missing equals(=) symbol.", lines[lineIndex])
                 }
 
-                if (tokens[i + 4] == undefined) {
+                if (tokens[i + 3] == undefined) {
                     throw new SyntaxError("Variable declaration keyword(val) missing value.", lines[lineIndex])
                 }
             } else if (tokens[i] == TokenType.IF) {
@@ -114,15 +110,11 @@ export default async function (source: string) {
                     throw new SyntaxError("Function declaration keyword(func) placed incorrectly.", lines[lineIndex])
                 }
 
-                if (tokens[i + 1] == undefined || getKey(tokens[i + 1]) != TokenType.TYPE) {
-                    throw new SyntaxError("Function declaration keyword(func) must have a type.", lines[lineIndex])
-                }
-                
-                if (tokens[i + 1] == undefined || getKey(tokens[i + 2]) != TokenType.LITERAL) {
+                if (tokens[i + 1] == undefined || getKey(tokens[i + 1]) != TokenType.LITERAL) {
                     throw new SyntaxError("Function declaration keyword(func) must have a name.", lines[lineIndex])
                 }
 
-                if (tokens[i + 2] == undefined || tokens[i + 3] != TokenType.LPAREN) {
+                if (tokens[i + 2] == undefined || tokens[i + 2] != TokenType.LPAREN) {
                     throw new SyntaxError("Function declaration keyword(func) requires a left parenthesis.", lines[lineIndex])
                 }
 
@@ -144,6 +136,22 @@ export default async function (source: string) {
             } else if (getKey(tokens[i]) == TokenType.LITERAL) {
                 if (StandardFunctions.includes(getValue(tokens[i]))) {
                     tokensArr[lineIndex][i] = TokenType.STDFUNC + ":" + getValue(tokens[i])
+                }
+            } else if (getKey(tokens[i]) == TokenType.STRING) {
+                if (getValue(tokens[i]).includes("$")) {
+                    let split = getValue(tokens[i]).split(" ")
+    
+                    for (let j = 0; j < split.length; j++) {
+                        if (split[j].startsWith("$")) {
+                            let name = split[j].replace("$", "")
+                            let non_alpha = name.replace(/[a-zA-Z]/g, '');
+                            let alphaOnly = name.replace(/[^a-zA-Z]/g, '');
+                            split[j] = "${" + alphaOnly + "}" + non_alpha
+                        }
+                    }
+    
+                    tokensArr[lineIndex][i] = TokenType.LITERAL + ":" + split.join(" ")
+                    console.log(tokensArr[lineIndex][i])
                 }
             }
         }
