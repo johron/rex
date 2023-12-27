@@ -43,59 +43,20 @@ export default function (line: string) {
             tokenArr.push(TokenType.ASTERISK)
         } else if (c == "/") {
             tokenArr.push(TokenType.SLASH)
-        } else if (keyword("==", charArr, i)) {
-            tokenArr.push(TokenType.DEQUALS)
-            i += 1
-        } else if (keyword(">=", charArr, i)) {
-            tokenArr.push(TokenType.GEQUALS)
-            i += 1
-        } else if (keyword("<=", charArr, i)) {
-            tokenArr.push(TokenType.LEQUALS)
-            i += 1
-        } else if (keyword("!=", charArr, i)) {
-            tokenArr.push(TokenType.NEQUALS)
-            i += 1
         } else if (c == "=") {
             tokenArr.push(TokenType.EQUALS)
         } else if (c == ">") {
             tokenArr.push(TokenType.GREATER)
         } else if (c == "<") {
             tokenArr.push(TokenType.LESS)
-        } else if (c == "!") {
-            tokenArr.push(TokenType.NOT)
-        } else if (c == ",") {
-            tokenArr.push(TokenType.COMMA)
-        } else if (c == "(") {
-            tokenArr.push(TokenType.LPAREN)
-        } else if (c == ")") {
-            tokenArr.push(TokenType.RPAREN)
-        } else if (c == "{") {
-            tokenArr.push(TokenType.OPEN)
-        } else if (c == "}") {
-            tokenArr.push(TokenType.CLOSE)
         } else if (c == ".") {
             tokenArr.push(TokenType.PERIOD)
-        } else if (keyword("if", charArr, i)) {
-            tokenArr.push(TokenType.IF)
-            i += 1
-        } else if (keyword("val", charArr, i)) {
-            tokenArr.push(TokenType.VAL)
-            i += 2
-        } else if (keyword("func", charArr, i)) {
-            tokenArr.push(TokenType.FUNC)
-            i += 3
-        } else if (keyword("return", charArr, i)) {
-            tokenArr.push(TokenType.RETURN)
-            i += 5
         } else if (keyword("true", charArr, i)) {
             tokenArr.push(TokenType.BOOLEAN + ":true")
             i += 3
         } else if (keyword("false", charArr, i)) {
             tokenArr.push(TokenType.BOOLEAN + ":false")
             i += 4
-        } else if (keyword("use", charArr, i)) {
-            tokenArr.push(TokenType.USE)
-            i += 2
         } else {
             if (isNumeric(c)) {
                 let number = ""
