@@ -13,11 +13,5 @@ bun run .
 ```
 
 ## To-do list
-- [x] Comments
-- [x] Parse if statements
-- [x] Parse functions
-- [x] Add float support in lexer
-- [ ] Code generation
-- [ ] Write compiler in itself
 
 `This project is currently being written with in bun v1.0.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.`
