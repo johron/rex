@@ -1,0 +1,4 @@
+-> start {
+    push 41
+    echo
+}

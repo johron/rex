@@ -1,6 +1,0 @@
-// This code is not finalised and subject to change;
-
-func int main() {;
-    echo("Hello, World!");
-    return 0;
-};

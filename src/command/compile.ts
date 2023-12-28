@@ -9,6 +9,8 @@
 
 import codegen from "../compiler/codegen";
 import theTime from "../util/theTime.ts";
+import { promisify } from "node:util"
+import { exec as _exec } from "node:child_process"
 
 export default async function(args: string[], time: number) {
     const path: string = args[1]
@@ -21,7 +23,10 @@ export default async function(args: string[], time: number) {
     }
 
     const result: string = await codegen(await file.text())
-    await Bun.write(`build/${name}.lua`, result)
+    await Bun.write(`build/${name}.asm`, result)
+    const exec = promisify(_exec)
+    await exec(`nasm -felf64 build/${name}.asm`)
+    await exec(`ld build/${name}.o -o build/${name}`)
 
     console.log(`[${theTime()}] Completed compilation in ${new Date().getTime() - time}ms.`)
 }
