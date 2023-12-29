@@ -1,8 +1,15 @@
-// This code is not finalised and subject to change;
+// This code may not work in the future
 
-func int main() {;
-    val int a = 2 + 3;
-    val int b = 3 - 2;
-    val int c = 2 * 3;
-    val float d = 3 / 2;
-};
+// This program calculates (((15 + 10) - 5) * 2) and outputs the result
+
+-> start {
+    push 15
+    push 10
+    add
+    push 5
+    sub
+    push 2
+    mul
+    run echo
+    exit
+}

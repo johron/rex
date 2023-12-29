@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "bun run .",
-    "compile": "bun run . compile"
+    "compile": "bun run . compile",
+    "bundle": "esbuild src/index.ts --bundle --platform=node --target=node18 --outfile=bundle/vex.js"
   },
   "devDependencies": {
     "@biomejs/biome": "1.4.1",
@@ -16,6 +17,7 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "commander": "^11.1.0"
+    "commander": "^11.1.0",
+    "esbuild": "^0.19.10"
   }
 }

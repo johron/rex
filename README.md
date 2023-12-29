@@ -7,17 +7,29 @@ bun install
 ```
 
 ## Running
-`View help message`
+`source version`
 ```bash
 bun run .
 ```
+or
+`bundled version`
+```bash
+bun run ./vex.js
+```
+
+## Features
+- Pushing to stack (push x)
+- Adding, subtracting, multiplying, and dividing (add, sub, mul, div)
+- Equality and inequality (equal)
+- Duplicate top element of stack (dup)
+- Outputting to standard output (echo)
 
 ## To-do list
-- [x] Comments
-- [x] Parse if statements
-- [x] Parse functions
-- [x] Add float support in lexer
-- [ ] Code generation
-- [ ] Write compiler in itself
+- [ ] Alternate sections and (functions?) other than _start and .text
+- [ ] Reading user input
+- [ ] More error handling
+- [ ] Documentation
+- [ ] Better syntax
+- [ ] Rewrite in Vex
 
 `This project is currently being written with in bun v1.0.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.`

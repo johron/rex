@@ -15,7 +15,7 @@ const { name, description, version } = require("../package.json")
 console.log(`[${theTime()}] Starting compilation.`)
 
 const cli = new Command()
-const time: number = new Date().getTime()
+const startTime: number = new Date().getTime()
 
 cli
     .name(name)
@@ -26,7 +26,7 @@ cli.command('compile')
     .description('Compile vex source code')
     .argument('<path>', 'file path of source code')
     .action(() => {
-        compile(cli.args, time)
+        compile(cli.args, startTime)
     })
 
 cli.parse()

@@ -9,10 +9,12 @@
 
 import isAlpha from "../util/isAlpha"
 import isNumeric from "../util/isNumeric"
-import TokenType from "../array/TokenType.ts";
-import Symbols from "../array/Symbols.ts";
+import Instruction from "../enum/Instruction.ts";
+import Symbol from "../enum/Symbol.ts";
+import Type from "../enum/Type.ts";
+import SyntaxError from "../error/SyntaxError.ts";
 
-function keyword(check: string, fromArr: string[], startIndex: number) {
+function has(check: string, fromArr: string[], startIndex: number) {
     let checkArr = check.split("")
 
     for (let i = 0; i < checkArr.length; i++) {
@@ -32,133 +34,110 @@ export default function (line: string) {
 
     for (let i = 0; i < charArr.length; i++) {
         const c = charArr[i]
-
-        if (keyword("//", charArr, i)) {
+        
+        if (has("//", charArr, i)) {
             return []
-        } else if (c == "+") {
-            tokenArr.push(TokenType.PLUS)
-        } else if (c == "-") {
-            tokenArr.push(TokenType.MINUS)
-        } else if (c == "*") {
-            tokenArr.push(TokenType.ASTERISK)
-        } else if (c == "/") {
-            tokenArr.push(TokenType.SLASH)
-        } else if (keyword("==", charArr, i)) {
-            tokenArr.push(TokenType.DEQUALS)
-            i += 1
-        } else if (keyword(">=", charArr, i)) {
-            tokenArr.push(TokenType.GEQUALS)
-            i += 1
-        } else if (keyword("<=", charArr, i)) {
-            tokenArr.push(TokenType.LEQUALS)
-            i += 1
-        } else if (keyword("!=", charArr, i)) {
-            tokenArr.push(TokenType.NEQUALS)
-            i += 1
-        } else if (c == "=") {
-            tokenArr.push(TokenType.EQUALS)
-        } else if (c == ">") {
-            tokenArr.push(TokenType.GREATER)
-        } else if (c == "<") {
-            tokenArr.push(TokenType.LESS)
-        } else if (c == "!") {
-            tokenArr.push(TokenType.NOT)
-        } else if (c == ",") {
-            tokenArr.push(TokenType.COMMA)
-        } else if (c == "(") {
-            tokenArr.push(TokenType.LPAREN)
-        } else if (c == ")") {
-            tokenArr.push(TokenType.RPAREN)
-        } else if (c == "{") {
-            tokenArr.push(TokenType.OPEN)
-        } else if (c == "}") {
-            tokenArr.push(TokenType.CLOSE)
-        } else if (c == ".") {
-            tokenArr.push(TokenType.PERIOD)
-        } else if (keyword("if", charArr, i)) {
-            tokenArr.push(TokenType.IF)
-            i += 1
-        } else if (keyword("val", charArr, i)) {
-            tokenArr.push(TokenType.VAL)
+        } else if (has("add", charArr, i)) {
+            tokenArr.push(Instruction.ADD)
             i += 2
-        } else if (keyword("func", charArr, i)) {
-            tokenArr.push(TokenType.FUNC)
+        } else if (has("sub", charArr, i)) {
+            tokenArr.push(Instruction.SUB)
+            i += 2
+        } else if (has("mul", charArr, i)) {
+            tokenArr.push(Instruction.MUL)
+            i += 2
+        } else if (has("div", charArr, i)) {
+            tokenArr.push(Instruction.DIV)
+            i += 2
+        } else if (has("inc", charArr, i)) {
+            tokenArr.push(Instruction.INC)
+            i += 2
+        } else if (has("dec", charArr, i)) {
+            tokenArr.push(Instruction.DEC)
+            i += 2
+        } else if (has("run", charArr, i)) {
+            tokenArr.push(Instruction.RUN)
             i += 3
-        } else if (keyword("return", charArr, i)) {
-            tokenArr.push(TokenType.RETURN)
-            i += 5
-        } else if (keyword("true", charArr, i)) {
-            tokenArr.push(TokenType.BOOLEAN + ":true")
+        } else if (has("ret", charArr, i)) {
+            tokenArr.push(Instruction.RET)
+            i += 2
+        } else if (has("push", charArr, i)) {
+            tokenArr.push(Instruction.PUSH)
             i += 3
-        } else if (keyword("false", charArr, i)) {
-            tokenArr.push(TokenType.BOOLEAN + ":false")
+        } else if (has("equal", charArr, i)) {
+            tokenArr.push(Instruction.EQUAL)
             i += 4
-        } else if (keyword("use", charArr, i)) {
-            tokenArr.push(TokenType.USE)
+        } else if (has("exit", charArr, i)) {
+            tokenArr.push(Instruction.EXIT)
+            i += 3
+        } else if (has("dup", charArr, i)) {
+            tokenArr.push(Instruction.DUP)
             i += 2
-        } else {
-            if (isNumeric(c)) {
-                let number = ""
-                let j = i
-                let broke = false
-                
-                for (j; j < charArr.length; j++) {
-                    if (isNumeric(charArr[j]) || charArr[j] == ".") {
-                        number += charArr[j]
-                    } else {
-                        broke = true
-                        break
-                    }
+            
+        // Symbols
+        } else if (has(",", charArr, i)) {
+            tokenArr.push(Symbol.COMMA)
+        } else if (has(".", charArr, i)) {
+            tokenArr.push(Symbol.PERIOD)
+        } else if (has("{", charArr, i)) {
+            tokenArr.push(Symbol.LBRACKET)
+        } else if (has("}", charArr, i)) {
+            tokenArr.push(Symbol.RBRACKET)
+        } else if (has("->", charArr, i)) {
+            tokenArr.push(Symbol.ARROW)
+            i += 1
+        } else if (isNumeric(c)) {
+            let number = ""
+            let j = i
+            let broke = false
+
+            for (j; j < charArr.length; j++) {
+                if (isNumeric(charArr[j]) || charArr[j] == ".") {
+                    number += charArr[j]
+                } else {
+                    broke = true
+                    break
                 }
-
-                if (broke) i += (j - i) - 1
-                else i += j - i
-                
-                if (number.includes(".")) tokenArr.push(TokenType.FLOAT + ":" + number)
-                else tokenArr.push(TokenType.INTEGER + ":" + number)
-            } else if (c == "\"") {
-                let string = "`"
-                let j = i + 1
-                
-                for (j; j < charArr.length; j++) {
-                    if (charArr[j] == "\"") {
-                        string += "`"
-                        break
-                    }
-
-                    string += charArr[j]
-                }
-
-                i += j - i
-                tokenArr.push(TokenType.STRING + ":" + string)
-            } else {
-                if (c == " ") continue
-
-                if (isAlpha(c)) {
-                    let combined = ""
-                    let j = i
-
-                    for (j; j < charArr.length; j++) {
-                        if (isAlpha(charArr[j])) {
-                            combined += charArr[j]
-                        } else {
-                            break
-                        }
-                    }
-
-                    i += j - i
-                    tokenArr.push(TokenType.LITERAL + ":" + combined)
-                }
-
-                if (charArr[i] == " ") continue
-                if (charArr[i] == undefined) continue
-                if (Symbols.includes(charArr[i])) {
-                    i--
-                    continue
-                }
-
-                tokenArr.push(TokenType.LITERAL + ":" + charArr[i])
             }
+
+            if (broke) i += (j - i) - 1
+            else i += j - i
+
+            if (number.includes(".")) tokenArr.push(Type.FLOAT + ":" + number)
+            else tokenArr.push(Type.INTEGER + ":" + number)
+        } else if (c == '"') {
+            let string: string = ''
+            let j = i + 1
+
+            for (i; j < charArr.length; j++) {
+                if (charArr[j] == '"') {
+                    string += ''
+                    break
+                }
+                
+                string += charArr[j]
+            }
+
+            i += j - i
+            tokenArr.push(Type.STRING + ":" + string)
+        } else if (isAlpha(c)) {
+            let combined = ""
+            let j = i
+
+            for (j; j < charArr.length; j++) {
+                if (isAlpha(charArr[j])) {
+                    combined += charArr[j]
+                } else {
+                    break
+                }
+            }
+
+            i += j - i - 1
+            tokenArr.push(Type.LITERAL + ":" + combined)
+        } else if (charArr[i] == undefined || charArr[i] == " ")  {
+            continue
+        } else {
+            throw new SyntaxError("Unexpected token found during lexing: " + c, line)
         }
     }
 
