@@ -19,8 +19,8 @@ Vex is a hobby compiler for learning more about string manipulation and error ha
 - [ ] Rewrite in Vex
 
 ## Dependencies
-- [Bun](https://bun.sh)/[NodeJS](https://nodejs.org)
-    - Node/Bun modules are listed in the package.json and can be installed with `bun install` or `npm install` from the project root
+- [Bun](https://bun.sh)
+    - Bun modules are listed in the package.json and can be installed with `bun install` from the project root
 - [NASM](https://www.nasm.us/)
 - [The GNU linker](https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_mono/ld.html) (if you're on linux this is probably already available from the "ld" command)
 
