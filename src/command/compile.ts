@@ -9,7 +9,7 @@
 
 import codegen from "../compiler/codegen";
 import theTime from "../util/theTime.ts";
-import { promisify } from "node:util"
+import promisify from "node:util"
 import { exec as _exec } from "node:child_process"
 
 export default async function(args: string[], startTime: number) {

@@ -170,5 +170,6 @@ dist
 
 build/
 test/
+bundle/
 .idea/
 bun.lockb
