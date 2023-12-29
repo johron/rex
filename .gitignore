@@ -12,6 +12,8 @@
 .idea/gradle.xml
 .idea/libraries
 .idea/mongoSettings.xml
+.idea/modules.xml
+.idea/discord.xml
 
 node_modules/
 build/
