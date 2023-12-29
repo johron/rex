@@ -35,6 +35,8 @@ export default function (line: string) {
     for (let i = 0; i < charArr.length; i++) {
         const c = charArr[i]
         
+        if (c == "\t" || c =="\f") return ""
+        
         if (has("//", charArr, i)) {
             return []
         } else if (has("add", charArr, i)) {
