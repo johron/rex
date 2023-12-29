@@ -1,7 +1,0 @@
--> start {
-    push 4
-    dup
-    add
-    run echo
-    exit
-}

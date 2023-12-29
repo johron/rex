@@ -90,7 +90,7 @@ export default function (line: string) {
             let number = ""
             let j = i
             let broke = false
-                
+
             for (j; j < charArr.length; j++) {
                 if (isNumeric(charArr[j]) || charArr[j] == ".") {
                     number += charArr[j]
@@ -102,9 +102,24 @@ export default function (line: string) {
 
             if (broke) i += (j - i) - 1
             else i += j - i
-                
-            if (number.includes(".")) tokenArr.push(Type.FLOAT + ":" + number) 
+
+            if (number.includes(".")) tokenArr.push(Type.FLOAT + ":" + number)
             else tokenArr.push(Type.INTEGER + ":" + number)
+        } else if (c == '"') {
+            let string: string = ''
+            let j = i + 1
+
+            for (i; j < charArr.length; j++) {
+                if (charArr[j] == '"') {
+                    string += ''
+                    break
+                }
+                
+                string += charArr[j]
+            }
+
+            i += j - i
+            tokenArr.push(Type.STRING + ":" + string)
         } else if (isAlpha(c)) {
             let combined = ""
             let j = i

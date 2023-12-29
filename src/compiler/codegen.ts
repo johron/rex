@@ -12,12 +12,14 @@ import getValue from "../util/getValue.ts";
 import getKey from "../util/getKey.ts";
 import Instruction from "../enum/Instruction.ts";
 import Symbol from "../enum/Symbol.ts";
+import Type from "../enum/Type.ts";
 
 export default async function (source: string) {
+    let strings: string[] = []
     const lines = await parser(source)
 
-    let result = "section .text\n"
-    result += "global _start\n"
+    let result = "BITS 64\n"
+    result += "section .text\n"
     result += ";; -- echo --\n"
     result += "echo:\n"
     result += "mov r9, -3689348814741910323\n"
@@ -52,6 +54,7 @@ export default async function (source: string) {
     result += "syscall\n"
     result += "add rsp, 40\n"
     result += "ret\n"
+    result += "global _start\n"
     
     for (let line = 0; line < lines.length; line++) {
         if (lines[line].length == 0) continue
@@ -98,19 +101,40 @@ export default async function (source: string) {
             } else if (currentToken == Instruction.RUN) {
                 const tokenArgument: string = lines[line][token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
                 result += `;; -- run ${tokenArgument} --\n`
-                if (tokenArgument == "echo") result += "pop rdi\npush rdi\n"
-                result += `call ${tokenArgument}\n`
                 
+                if (tokenArgument == "echo") {
+                    result += "pop rdi\n"
+                    result += "call echo\n"
+                } else if (tokenArgument == "echos") {
+                    result += "mov rax, 1\n"
+                    result += "mov rdi, 1\n"
+                    result += "pop rsi\n"
+                    result += "pop rdx\n"
+                    result += "syscall\n"
+                    result += "push rax\n"
+                } else {
+                    result += `call ${tokenArgument}\n`
+                }
+                    
                 token++
             } else if (currentToken == Instruction.RET) {
                 result += `;; -- ret --\n`
                 result += ";; -- Not implemented --\n"
             } else if (currentToken == Instruction.PUSH) {
-                const tokenArgument: string = lines[line][token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
+                const tokenArgument: string = lines[line][token + 1]
 
-                result += `;; -- push ${tokenArgument} --\n`
-                result += `push ${tokenArgument}\n`
-
+                result += `;; -- push ${getValue(tokenArgument)} --\n`
+                
+                if (getKey(tokenArgument) == Type.STRING) {
+                    result += `mov rax, ${getValue(tokenArgument).length}\n`
+                    result += `push rax\n`
+                    result += `push str_${strings.length}\n`
+                    strings.push(getValue(tokenArgument))
+                } else {
+                    result += `mov rax, ${getValue(tokenArgument)}\n`
+                    result += `push rax\n`
+                }
+                
                 token++
             } else if (currentToken == Instruction.EQUAL) {
                 result += ";; -- equal --\n"
@@ -142,6 +166,15 @@ export default async function (source: string) {
                 console.log("Unknown token found during code generation: " + currentToken)
             }
         }
+    }
+    
+    result += "section .data\n"
+    for (let string = 0; string < strings.length; string++) {
+        const byteArray: number[] = Array.from(Buffer.from(strings[string], 'utf-8'));
+        let hexString: string = byteArray.map(num => "0x" + num.toString(16)).join(',');
+        hexString = hexString.replaceAll("0x5c,0x6e", "0xA")
+        hexString = "0x02," + hexString + ",0x03"
+        result += `str_${string}: db ${hexString}\n`
     }
     
     return result

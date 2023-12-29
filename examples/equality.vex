@@ -1,0 +1,11 @@
+// This code may not work in the future
+
+// This program pushes two 10s to the stack, checks if they are equal, and outputs the result in binary (0: false, 1: true)
+
+-> start {
+    push 10
+    push 10
+    equal
+    run echo
+    exit
+}

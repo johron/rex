@@ -14,6 +14,7 @@ import getKey from "../util/getKey.ts";
 import getValue from "../util/getValue.ts";
 import Symbol from "../enum/Symbol.ts";
 import Type from "../enum/Type.ts";
+import GetKey from "../util/getKey.ts";
 
 async function checkForClose(lineIndex: number, tokensArr: string[][]) {
     let openCount = 0
