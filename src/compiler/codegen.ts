@@ -18,6 +18,7 @@ export default async function (source: string) {
 
     let result = "section .text\n"
     result += "global _start\n"
+    result += ";; -- echo --\n"
     result += "echo:\n"
     result += "mov r9, -3689348814741910323\n"
     result += "sub rsp, 40\n"
@@ -84,10 +85,20 @@ export default async function (source: string) {
                 result += "pop rax\n"
                 result += "div rbx\n"
                 result += "push rax\n"
+            } else if (currentToken == Instruction.INC) {
+                result += `;; -- inc --\n`
+                result += "pop rax\n"
+                result += "inc rax\n"
+                result += "push rax\n"
+            } else if (currentToken == Instruction.DEC) {
+                result += `;; -- dec --\n`
+                result += "pop rax\n"
+                result += "dec rax\n"
+                result += "push rax\n"
             } else if (currentToken == Instruction.RUN) {
                 const tokenArgument: string = lines[line][token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
-                
-                result += `;; -- call ${tokenArgument} --\n`
+                result += `;; -- run ${tokenArgument} --\n`
+                if (tokenArgument == "echo") result += "pop rdi\npush rdi\n"
                 result += `call ${tokenArgument}\n`
                 
                 token++
@@ -96,40 +107,37 @@ export default async function (source: string) {
                 result += ";; -- Not implemented --\n"
             } else if (currentToken == Instruction.PUSH) {
                 const tokenArgument: string = lines[line][token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
-                
+
                 result += `;; -- push ${tokenArgument} --\n`
                 result += `push ${tokenArgument}\n`
-                
+
                 token++
-            } else if (currentToken == Instruction.ECHO) {
-                result += `;; -- echo --\n`
-                result += "pop rdi\n"
-                result += "call echo\n"
-            /*} else if (currentToken == Instruction.SECTION) {
-                const tokenArgument: string = lines[line][token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
-
-                result += `;; -- section ${tokenArgument} --\n`
-                result += `section .${tokenArgument}\n`
-
-                token++*/
+            } else if (currentToken == Instruction.EQUAL) {
+                result += ";; -- equal --\n"
+                result += "pop rax\n"
+                result += "pop rbx\n"
+                result += "cmp rax, rbx\n"
+                result += "sete al\n"
+                result += "push rax\n"
             } else if (currentToken == Symbol.ARROW) {
                 const tokenArgument: string = lines[line][token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
-                
+
                 result += `;; -- ${tokenArgument} --\n`
                 if (tokenArgument == "start") result += "_"
-                
+
                 result += `${tokenArgument}:\n`
-                
+
                 token++
+            } else if (currentToken == Instruction.EXIT) {
+                result += ";; -- exit --\n"
+                result += "mov rax, 60\n"
+                result += "xor rdi, rdi\n"
+                result += "syscall\n"
             } else {
                 console.log("Unknown token found during code generation: " + currentToken)
             }
         }
     }
-    
-    result += "mov rax, 60\n"
-    result += "xor rdi, rdi\n"
-    result += "syscall\n"
     
     return result
 }

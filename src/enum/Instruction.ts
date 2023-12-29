@@ -1,20 +1,15 @@
 enum Instruction {
-    // Arithmetic
     ADD = "ADD",
     SUB = "SUB",
     MUL = "MUL",
     DIV = "DIV",
-    
-    // Function Calls
+    INC = "INC",
+    DEC = "DEC",
     RUN = "RUN",
     RET = "RET",
     PUSH = "PUSH",
-    
-    // Standard Function Calls
-    ECHO = "ECHO",
-    
-    // ?
-    SECTION = "SECTION",
+    EQUAL = "EQUAL",
+    EXIT = "EXIT",
 }
 
 export default Instruction

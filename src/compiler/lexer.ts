@@ -35,11 +35,8 @@ export default function (line: string) {
     for (let i = 0; i < charArr.length; i++) {
         const c = charArr[i]
         
-        // Comments
         if (has("//", charArr, i)) {
             return []
-
-        // Arithmetic
         } else if (has("add", charArr, i)) {
             tokenArr.push(Instruction.ADD)
             i += 2
@@ -52,8 +49,12 @@ export default function (line: string) {
         } else if (has("div", charArr, i)) {
             tokenArr.push(Instruction.DIV)
             i += 2
-        
-        // Function Calls
+        } else if (has("inc", charArr, i)) {
+            tokenArr.push(Instruction.INC)
+            i += 2
+        } else if (has("dec", charArr, i)) {
+            tokenArr.push(Instruction.DEC)
+            i += 2
         } else if (has("run", charArr, i)) {
             tokenArr.push(Instruction.RUN)
             i += 3
@@ -63,16 +64,12 @@ export default function (line: string) {
         } else if (has("push", charArr, i)) {
             tokenArr.push(Instruction.PUSH)
             i += 3
-
-        // Standard Function Calls
-        } else if (has("echo", charArr, i)) {
-            tokenArr.push(Instruction.ECHO)
+        } else if (has("equal", charArr, i)) {
+            tokenArr.push(Instruction.EQUAL)
+            i += 4
+        } else if (has("exit", charArr, i)) {
+            tokenArr.push(Instruction.EXIT)
             i += 3
-            
-        // ?
-        } else if (has("section", charArr, i)) {
-            tokenArr.push(Instruction.SECTION)
-            i += 6
             
         // Symbols
         } else if (has(",", charArr, i)) {

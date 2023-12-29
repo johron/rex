@@ -1,4 +1,8 @@
 -> start {
-    push 41
-    echo
+    push 16
+    run echo
+    push 4
+    add
+    run echo
+    exit
 }
