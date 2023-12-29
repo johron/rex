@@ -1,9 +1,15 @@
 # Vex
 Vex is a hobby compiler for learning more about string manipulation and error handling. I would hope to rewrite the language in itself when the base compiler is finished. Currently the compiler is being written in TypeScript using the Bun Runtime.
 
-## Installing dependencies
+## Dependencies
+- [Bun](https://bun.sh)/[NodeJS](https://nodejs.org)
+    - Node/Bun modules are listed in the package.json and can be installed with `bun install` or `npm install` from the project root
+- [NASM](https://www.nasm.us/)
+- [The GNU linker](https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_mono/ld.html) (if you're on linux this is probably already available from the "ld" command)
+
+## Bundle from source
 ```bash
-bun install
+bun run bundle
 ```
 
 ## Running
