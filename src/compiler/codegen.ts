@@ -119,6 +119,11 @@ export default async function (source: string) {
                 result += "cmp rax, rbx\n"
                 result += "sete al\n"
                 result += "push rax\n"
+            } else if (currentToken == Instruction.DUP) {
+                result += ";; -- dup --\n"
+                result += "pop rax\n"
+                result += "push rax\n"
+                result += "push rax\n"
             } else if (currentToken == Symbol.ARROW) {
                 const tokenArgument: string = lines[line][token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
 

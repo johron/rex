@@ -8,6 +8,7 @@ enum Instruction {
     RUN = "RUN",
     RET = "RET",
     PUSH = "PUSH",
+    DUP = "DUP",
     EQUAL = "EQUAL",
     EXIT = "EXIT",
 }

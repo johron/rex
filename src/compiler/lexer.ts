@@ -70,6 +70,9 @@ export default function (line: string) {
         } else if (has("exit", charArr, i)) {
             tokenArr.push(Instruction.EXIT)
             i += 3
+        } else if (has("dup", charArr, i)) {
+            tokenArr.push(Instruction.DUP)
+            i += 2
             
         // Symbols
         } else if (has(",", charArr, i)) {

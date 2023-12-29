@@ -12,6 +12,14 @@ bun install
 bun run .
 ```
 
+## Features
+- [x] Pushing to stack (push x)
+- [x] Adding, subtracting, multiplying, and dividing (add, sub, mul, div)
+- [x] Equality and inequality (equal)
+- [x] Outputting to standard output (echo)
+
 ## To-do list
+- [ ] Alternate sections
+- [ ] Reading user input
 
 `This project is currently being written with in bun v1.0.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.`

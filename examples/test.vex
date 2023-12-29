@@ -1,7 +1,6 @@
 -> start {
-    push 16
-    run echo
     push 4
+    dup
     add
     run echo
     exit
