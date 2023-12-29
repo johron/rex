@@ -11,15 +11,20 @@ bun install
 ```bash
 bun run .
 ```
+`Compile vex source code`
+```bash
+bun run . compile <file>
+```
 
 ## Features
 - [x] Pushing to stack (push x)
 - [x] Adding, subtracting, multiplying, and dividing (add, sub, mul, div)
 - [x] Equality and inequality (equal)
+- [x] Duplicate top element of stack (dup)
 - [x] Outputting to standard output (echo)
 
 ## To-do list
-- [ ] Alternate sections
+- [ ] Alternate sections and (functions?) other than _start and .text
 - [ ] Reading user input
 
 `This project is currently being written with in bun v1.0.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.`
