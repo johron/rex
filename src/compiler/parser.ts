@@ -44,6 +44,7 @@ export default async function (source: string) {
     let tokensArr: string[][] = []
 
     for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
+        // @ts-ignore
         tokensArr.push(lexer(lines[lineIndex]))
     }
 
