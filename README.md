@@ -1,7 +1,7 @@
 # Vex
 Vex is a hobby compiler for learning more about string manipulation and error handling. I would hope to rewrite the language in itself when the base compiler is finished. Currently the compiler is being written in TypeScript using the Bun Runtime.
 
-`ONLY AVAILABLE ON LINUX`
+`ONLY AVAILABLE FOR LINUX`
 
 ## Features
 - Pushing to stack (push x)
