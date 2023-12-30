@@ -20,9 +20,9 @@ async function checkForClose(lineIndex: number, tokensArr: string[][]) {
         const tokens = tokensArr[i]
 
         for (let j = 0; j < tokens.length; j++) {
-            if (tokens[j] === Symbol.LBRACKET) {
+            if (tokens[j] === Symbol.LBRACE) {
                 openCount++
-            } else if (tokens[j] === Symbol.RBRACKET) {
+            } else if (tokens[j] === Symbol.RBRACE) {
                 openCount--
 
                 if (openCount === 0) {
@@ -54,7 +54,7 @@ export default async function (source: string) {
                 if (tokens[i].replace(".", "").includes(".")) {
                     throw new Error("float contains multiple periods", lines[lineIndex])
                 }
-            } else if (tokens[i] == Symbol.LBRACKET || tokens[i] == Symbol.RBRACKET) {
+            } else if (tokens[i] == Symbol.LBRACE || tokens[i] == Symbol.RBRACE) {
                 tokensArr[lineIndex][i] = ""
             }
         }

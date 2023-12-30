@@ -10,8 +10,8 @@
 enum Symbol {
     COMMA = "COMMA",
     PERIOD = "PERIOD",
-    LBRACKET = "LBRACKET",
-    RBRACKET = "RBRACKET",
+    LBRACE = "LBRACE",
+    RBRACE = "RBRACE",
     ARROW = "ARROW",
 }
 

@@ -82,9 +82,9 @@ export default function (line: string) {
         } else if (has(".", charArr, i)) {
             tokenArr.push(Symbol.PERIOD)
         } else if (has("{", charArr, i)) {
-            tokenArr.push(Symbol.LBRACKET)
+            tokenArr.push(Symbol.LBRACE)
         } else if (has("}", charArr, i)) {
-            tokenArr.push(Symbol.RBRACKET)
+            tokenArr.push(Symbol.RBRACE)
         } else if (has("->", charArr, i)) {
             tokenArr.push(Symbol.ARROW)
             i += 1
