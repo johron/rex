@@ -9,21 +9,38 @@
 
 import codegen from "../compiler/codegen";
 import theTime from "../util/theTime.ts";
-import * as pathjs from "path";
 
-export default async function(args: string[], startTime: number) {
+export default async function(args: string[], assemble: boolean, link: boolean) {
     const source: string = args[0]
     const output: string = args[1]
     const file = Bun.file(source)
 
     if (!await file.exists()) {
-        console.error("file not found")
+        console.error("tvc: logger: invalid source path")
+        console.log("compilation aborted")
         process.exit(1)
     }
 
-    console.log(`[${theTime()}] Starting compilation.`)
+    const startTime = new Date().getTime()
+    console.log(`[${theTime()}]: tvc: starting compilation`)
     
     const result: string = await codegen(await file.text())
     await Bun.write(output, result)
-    console.log(`[${theTime()}] Compilation completed in ${new Date().getTime() - startTime}ms.`)
+    console.log(`[${theTime()}]: tvc: wrote assembly in ${new Date().getTime() - startTime}ms`)
+    
+    if (assemble) {
+        const procStartTime = new Date().getTime()
+        const proc = Bun.spawn(["nasm", "-felf64", output])
+        await proc.exited
+        console.log(`[${theTime()}]: tvc: assembled in ${new Date().getTime() - procStartTime}ms`)
+
+        if (link) {
+            const procStartTime = new Date().getTime()
+            const proc = Bun.spawn(["ld", "-o", output.split(".")[0], output.split(".")[0] + ".o"])
+            await proc.exited
+            console.log(`[${theTime()}]: tvc: linked in ${new Date().getTime() - procStartTime}ms`)
+        }
+    }
+    
+    console.log(`[${theTime()}]: tvc: compilation completed in ${new Date().getTime() - startTime}ms`)
 }

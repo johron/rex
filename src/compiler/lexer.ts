@@ -12,7 +12,7 @@ import isNumeric from "../util/isNumeric"
 import Instruction from "../enum/Instruction.ts";
 import Symbol from "../enum/Symbol.ts";
 import Type from "../enum/Type.ts";
-import SyntaxError from "../error/SyntaxError.ts";
+import Error from "../logger/Error.ts";
 
 function has(check: string, fromArr: string[], startIndex: number) {
     let checkArr = check.split("")
@@ -139,7 +139,7 @@ export default function (line: string) {
         } else if (charArr[i] == undefined || charArr[i] == " ")  {
             continue
         } else {
-            throw new SyntaxError("Unexpected token found during lexing: " + c, line)
+            throw new Error("unexpected token found during lexing: " + c, line)
         }
     }
 

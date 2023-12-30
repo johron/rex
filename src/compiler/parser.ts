@@ -7,14 +7,11 @@
  * file, you can obtain one at: https://www.gnu.org/licenses/gpl-3.0.txt
  */
 
-import SyntaxError from "../error/SyntaxError";
-import Instruction from "../enum/Instruction.ts";
 import lexer from "./lexer";
 import getKey from "../util/getKey.ts";
-import getValue from "../util/getValue.ts";
 import Symbol from "../enum/Symbol.ts";
 import Type from "../enum/Type.ts";
-import GetKey from "../util/getKey.ts";
+import Error from "../logger/Error.ts";
 
 async function checkForClose(lineIndex: number, tokensArr: string[][]) {
     let openCount = 0
@@ -55,15 +52,13 @@ export default async function (source: string) {
 
             if (getKey(tokens[i]) == Type.FLOAT) {
                 if (tokens[i].replace(".", "").includes(".")) {
-                    throw new SyntaxError("Float contains multiple periods.", lines[lineIndex])
+                    throw new Error("float contains multiple periods", lines[lineIndex])
                 }
             } else if (tokens[i] == Symbol.LBRACKET || tokens[i] == Symbol.RBRACKET) {
                 tokensArr[lineIndex][i] = ""
             }
         }
     }
-
-    //console.log(tokensArr);
     
     return tokensArr
 }

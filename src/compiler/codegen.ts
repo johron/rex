@@ -13,6 +13,7 @@ import getKey from "../util/getKey.ts";
 import Instruction from "../enum/Instruction.ts";
 import Symbol from "../enum/Symbol.ts";
 import Type from "../enum/Type.ts";
+import Error from "../logger/Error.ts";
 
 export default async function (source: string) {
     let strings: string[] = []
@@ -163,7 +164,7 @@ export default async function (source: string) {
                 result += "xor rdi, rdi\n"
                 result += "syscall\n"
             } else {
-                console.log("Unknown token found during code generation: " + currentToken)
+                throw new Error("unknown token found during code generation: " + currentToken, lines[line].join(" "))
             }
         }
     }

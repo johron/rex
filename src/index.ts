@@ -10,6 +10,7 @@
 import { Command } from 'commander'
 import compile from './command/compile'
 import theTime from "./util/theTime.ts";
+import Warn from "./logger/Warn.ts";
 const { name, description, version } = require("../package.json")
 
 const cli = new Command()
@@ -17,11 +18,26 @@ const cli = new Command()
 cli
     .name(name)
     .description(description)
-    .version(version)
+    .version(version, '-v', '--version')
     .argument('<source>', 'source path')
     .argument('<output>', 'output path')
-    .action(() => {
-        compile(cli.args, new Date().getTime())
-    })
+    .option('-a', 'assemble with "nasm"')
+    .option('-l', 'link with "ld"')
+    .option('-r', 'run')
+    //.action(() => {})
 
-cli.parse()
+cli.parse(process.argv)
+
+const options = cli.opts()
+
+let assemble = false
+let link = false
+
+if (options.a == true) assemble = true
+if (options.l == true) {
+    if (!assemble) new Warn("-l is ignored without -a")
+    link = true
+}
+    
+
+compile(cli.args, assemble, link)
