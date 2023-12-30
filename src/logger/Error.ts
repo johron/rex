@@ -13,7 +13,7 @@ export default class {
         line = line.substring(1, line.length - 1)
 
         console.log(line)
-        console.error("tvc: error: " + message)
+        console.error("vex: error: " + message)
         console.log("compilation aborted")
         process.exit(1)
     }

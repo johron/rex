@@ -9,6 +9,6 @@
 
 export default class {
     constructor (message: string) {
-        console.warn("tvc: warning: " + message)
+        console.warn("vex: warning: " + message)
     }
 }

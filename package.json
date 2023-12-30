@@ -1,5 +1,5 @@
 {
-  "name": "tvc",
+  "name": "vex",
   "description": "The Vex Compiler",
   "version": "0.1.1",
   "module": "src/index.ts",
