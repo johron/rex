@@ -1,12 +1,11 @@
 {
-  "name": "vex",
-  "description": "The Vex hobby compiler",
-  "version": "0.1.0",
+  "name": "tvc",
+  "description": "The Vex Compiler",
+  "version": "0.1.1",
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
     "start": "bun run .",
-    "compile": "bun run . compile",
     "bundle": "esbuild src/index.ts --bundle --platform=node --target=node18 --outfile=bundle/vex.js"
   },
   "devDependencies": {

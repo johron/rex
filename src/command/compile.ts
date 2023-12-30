@@ -12,18 +12,18 @@ import theTime from "../util/theTime.ts";
 import * as pathjs from "path";
 
 export default async function(args: string[], startTime: number) {
-    const path: string = args[1]
-    const name: string = args[1]
-        ? pathjs.basename(path, pathjs.extname(path))
-        : 'source'
-    const file = Bun.file(path)
+    const source: string = args[0]
+    const output: string = args[1]
+    const file = Bun.file(source)
 
     if (!await file.exists()) {
         console.error("file not found")
         process.exit(1)
     }
+
+    console.log(`[${theTime()}] Starting compilation.`)
     
     const result: string = await codegen(await file.text())
-    await Bun.write(`build/${name}.asm`, result)
+    await Bun.write(output, result)
     console.log(`[${theTime()}] Compilation completed in ${new Date().getTime() - startTime}ms.`)
 }

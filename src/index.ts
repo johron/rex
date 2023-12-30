@@ -12,21 +12,16 @@ import compile from './command/compile'
 import theTime from "./util/theTime.ts";
 const { name, description, version } = require("../package.json")
 
-console.log(`[${theTime()}] Starting compilation.`)
-
 const cli = new Command()
-const startTime: number = new Date().getTime()
 
 cli
     .name(name)
     .description(description)
     .version(version)
-
-cli.command('compile')
-    .description('Compile vex source code')
-    .argument('<path>', 'file path of source code')
+    .argument('<source>', 'source path')
+    .argument('<output>', 'output path')
     .action(() => {
-        compile(cli.args, startTime)
+        compile(cli.args, new Date().getTime())
     })
 
 cli.parse()

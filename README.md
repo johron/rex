@@ -32,12 +32,12 @@ bun run bundle
 ## Run vex compiler
 `source version`
 ```bash
-bun run . <arg> <arg>
+bun start <source> <output>
 ```
 or
 `bundled version`
 ```bash
-bun run ./vex.js <arg> <arg>
+bun run ./vex.js <source> <output>
 ```
 
 ## Assemble and link the assembly
