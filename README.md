@@ -37,7 +37,7 @@ bun run . <arg> <arg>
 or
 `bundled version`
 ```bash
-bun run ./vex. <arg> <arg>
+bun run ./vex.js <arg> <arg>
 ```
 
 ## Assemble and link the assembly
