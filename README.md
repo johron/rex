@@ -29,15 +29,15 @@ Vex is a hobby compiler for learning more about string manipulation and error ha
 bun run bundle
 ```
 
-## Compile vex source code
+## Run vex compiler
 `source version`
 ```bash
-bun run .
+bun run . <arg> <arg>
 ```
 or
 `bundled version`
 ```bash
-bun run ./vex.js
+bun run ./vex. <arg> <arg>
 ```
 
 ## Assemble and link the assembly
