@@ -14,11 +14,15 @@ enum Instruction {
     DIV = "DIV",
     INC = "INC",
     DEC = "DEC",
-    RUN = "RUN",
+    ECHO = "ECHO",
+    PUTS = "PUTS",
     RET = "RET",
     PUSH = "PUSH",
     DUP = "DUP",
     EQUAL = "EQUAL",
+    FUN = "FUN",
+    DO = "DO",
+    END = "END",
     EXIT = "EXIT",
 }
 

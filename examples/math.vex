@@ -2,14 +2,12 @@
 
 // This program calculates (((15 + 10) - 5) * 2) and outputs the result
 
--> start {
-    push 15
-    push 10
-    add
-    push 5
-    sub
-    push 2
-    mul
-    run echo
-    exit
-}
+push 15
+push 10
+add
+push 5
+sub
+push 2
+mul
+run echo
+exit

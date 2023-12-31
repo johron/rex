@@ -57,8 +57,11 @@ export default function (line: string) {
         } else if (has("dec", charArr, i)) {
             tokenArr.push(Instruction.DEC)
             i += 2
-        } else if (has("run", charArr, i)) {
-            tokenArr.push(Instruction.RUN)
+        } else if (has("echo", charArr, i)) {
+            tokenArr.push(Instruction.ECHO)
+            i += 3
+        } else if (has("puts", charArr, i)) {
+            tokenArr.push(Instruction.PUTS)
             i += 3
         } else if (has("ret", charArr, i)) {
             tokenArr.push(Instruction.RET)
@@ -66,28 +69,30 @@ export default function (line: string) {
         } else if (has("push", charArr, i)) {
             tokenArr.push(Instruction.PUSH)
             i += 3
-        } else if (has("equal", charArr, i)) {
-            tokenArr.push(Instruction.EQUAL)
-            i += 4
-        } else if (has("exit", charArr, i)) {
-            tokenArr.push(Instruction.EXIT)
-            i += 3
         } else if (has("dup", charArr, i)) {
             tokenArr.push(Instruction.DUP)
             i += 2
+        } else if (has("equal", charArr, i)) {
+            tokenArr.push(Instruction.EQUAL)
+            i += 4
+        } else if (has("fun", charArr, i)) {
+            tokenArr.push(Instruction.FUN)
+            i += 3
+        } else if (has("do", charArr, i)) {
+            tokenArr.push(Instruction.DO)
+            i += 1
+        } else if (has("end", charArr, i)) {
+            tokenArr.push(Instruction.END)
+            i += 2
+        } else if (has("exit", charArr, i)) {
+            tokenArr.push(Instruction.EXIT)
+            i += 3
             
         // Symbols
         } else if (has(",", charArr, i)) {
             tokenArr.push(Symbol.COMMA)
         } else if (has(".", charArr, i)) {
             tokenArr.push(Symbol.PERIOD)
-        } else if (has("{", charArr, i)) {
-            tokenArr.push(Symbol.LBRACE)
-        } else if (has("}", charArr, i)) {
-            tokenArr.push(Symbol.RBRACE)
-        } else if (has("->", charArr, i)) {
-            tokenArr.push(Symbol.ARROW)
-            i += 1
         } else if (isNumeric(c)) {
             let number = ""
             let j = i

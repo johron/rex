@@ -12,6 +12,7 @@ import getKey from "../util/getKey.ts";
 import Symbol from "../enum/Symbol.ts";
 import Type from "../enum/Type.ts";
 import Error from "../logger/Error.ts";
+import Instruction from "../enum/Instruction.ts";
 
 async function checkForClose(lineIndex: number, tokensArr: string[][]) {
     let openCount = 0
@@ -20,9 +21,9 @@ async function checkForClose(lineIndex: number, tokensArr: string[][]) {
         const tokens = tokensArr[i]
 
         for (let j = 0; j < tokens.length; j++) {
-            if (tokens[j] === Symbol.LBRACE) {
+            if (tokens[j] === Instruction.DO) {
                 openCount++
-            } else if (tokens[j] === Symbol.RBRACE) {
+            } else if (tokens[j] === Instruction.END) {
                 openCount--
 
                 if (openCount === 0) {
@@ -54,7 +55,7 @@ export default async function (source: string) {
                 if (tokens[i].replace(".", "").includes(".")) {
                     throw new Error("float contains multiple periods", lines[lineIndex])
                 }
-            } else if (tokens[i] == Symbol.LBRACE || tokens[i] == Symbol.RBRACE) {
+            } else if (tokens[i] == Instruction.DO || tokens[i] == Instruction.END) {
                 tokensArr[lineIndex][i] = ""
             }
         }

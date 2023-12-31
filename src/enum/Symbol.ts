@@ -10,9 +10,6 @@
 enum Symbol {
     COMMA = "COMMA",
     PERIOD = "PERIOD",
-    LBRACE = "LBRACE",
-    RBRACE = "RBRACE",
-    ARROW = "ARROW",
 }
 
 export default Symbol

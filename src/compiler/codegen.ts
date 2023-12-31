@@ -56,6 +56,7 @@ export default async function (source: string) {
     result += "add rsp, 40\n"
     result += "ret\n"
     result += "global _start\n"
+    result += "_start:\n"
     
     for (let line = 0; line < lines.length; line++) {
         if (lines[line].length == 0) continue
@@ -99,25 +100,17 @@ export default async function (source: string) {
                 result += "pop rax\n"
                 result += "dec rax\n"
                 result += "push rax\n"
-            } else if (currentToken == Instruction.RUN) {
-                const tokenArgument: string = lines[line][token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
-                result += `;; -- run ${tokenArgument} --\n`
-                
-                if (tokenArgument == "echo") {
-                    result += "pop rdi\n"
-                    result += "call echo\n"
-                } else if (tokenArgument == "echos") {
-                    result += "mov rax, 1\n"
-                    result += "mov rdi, 1\n"
-                    result += "pop rsi\n"
-                    result += "pop rdx\n"
-                    result += "syscall\n"
-                    result += "push rax\n"
-                } else {
-                    result += `call ${tokenArgument}\n`
-                }
-                    
-                token++
+            } else if (currentToken == Instruction.ECHO) {
+                result += `;; -- echo --\n`
+                result += "pop rdi\n"
+                result += "call echo\n"
+            } else if (currentToken == Instruction.PUTS) {
+                result += "mov rax, 1\n"
+                result += "mov rdi, 1\n"
+                result += "pop rsi\n"
+                result += "pop rdx\n"
+                result += "syscall\n"
+                result += "push rax\n"
             } else if (currentToken == Instruction.RET) {
                 result += `;; -- ret --\n`
                 result += ";; -- Not implemented --\n"
@@ -149,13 +142,12 @@ export default async function (source: string) {
                 result += "pop rax\n"
                 result += "push rax\n"
                 result += "push rax\n"
-            } else if (currentToken == Symbol.ARROW) {
+            } else if (currentToken == Instruction.FUN) {
                 const tokenArgument: string = lines[line][token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
 
                 result += `;; -- ${tokenArgument} --\n`
-                if (tokenArgument == "start") result += "_"
-
-                result += `${tokenArgument}:\n`
+                if (tokenArgument == "main") result += "_start:\n"
+                else result += `${tokenArgument}:\n`
 
                 token++
             } else if (currentToken == Instruction.EXIT) {

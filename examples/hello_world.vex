@@ -2,8 +2,6 @@
 
 // Hello World program in vex
 
--> start {
-    push "Hello, World!\n"
-    run echos
-    exit
-}
+push "Hello, World!\n"
+run echos
+exit
