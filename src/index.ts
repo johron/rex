@@ -9,8 +9,6 @@
 
 import { Command } from 'commander'
 import compile from './command/compile'
-import theTime from "./util/theTime.ts";
-import Warn from "./logger/Warn.ts";
 const { name, description, version } = require("../package.json")
 
 const cli = new Command()
@@ -35,7 +33,9 @@ let link = false
 
 if (options.a == true) assemble = true
 if (options.l == true) {
-    if (!assemble) new Warn("-l is ignored without -a")
+    if (!assemble) {
+        console.log("vex: warning: -l is ignored without -a")
+    }
     link = true
 }
     

@@ -9,9 +9,7 @@
 
 import lexer from "./lexer";
 import getKey from "../util/getKey.ts";
-import Symbol from "../enum/Symbol.ts";
 import Type from "../enum/Type.ts";
-import Error from "../logger/Error.ts";
 import Instruction from "../enum/Instruction.ts";
 
 async function checkForClose(lineIndex: number, tokensArr: string[][]) {
@@ -37,29 +35,18 @@ async function checkForClose(lineIndex: number, tokensArr: string[][]) {
 }
 
 export default async function (source: string) {
-    source = source.replaceAll(/\r+(?=(?:(?:[^"]*"){2})*[^"]*$)/g, '')
-    let lines = source.split(/\n(?=(?:(?:[^"]*"){2})*[^"]*$)/)
-    let tokensArr: string[][] = []
+    let tokenArr = lexer(source)
 
-    for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
-        // @ts-ignore
-        tokensArr.push(lexer(lines[lineIndex]))
-    }
-
-    for (let lineIndex = 0; lineIndex < tokensArr.length; lineIndex++) {
-        const tokens = tokensArr[lineIndex]
-
-        for (let i = 0; i < tokens.length; i++) {
-
-            if (getKey(tokens[i]) == Type.FLOAT) {
-                if (tokens[i].replace(".", "").includes(".")) {
-                    throw new Error("float contains multiple periods", lines[lineIndex])
-                }
-            } else if (tokens[i] == Instruction.DO || tokens[i] == Instruction.END) {
-                tokensArr[lineIndex][i] = ""
+    for (let token = 0; token < tokenArr.length; token++) {
+        if (getKey(tokenArr[token]) == Type.FLOAT) {
+            if (tokenArr[token].replace(".", "").includes(".")) {
+                console.log("float contains multiple periods: " + tokenArr[token])
+                process.exit(1)
             }
+        } else if (tokenArr[token] == Instruction.DO || tokenArr[token] == Instruction.END) {
+            tokenArr[token] = ""
         }
     }
     
-    return tokensArr
+    return tokenArr
 }

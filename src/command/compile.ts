@@ -8,7 +8,6 @@
  */
 
 import codegen from "../compiler/codegen";
-import theTime from "../util/theTime.ts";
 
 export default async function(args: string[], assemble: boolean, link: boolean) {
     const source: string = args[0]
@@ -16,31 +15,31 @@ export default async function(args: string[], assemble: boolean, link: boolean) 
     const file = Bun.file(source)
 
     if (!await file.exists()) {
-        console.error("vex: logger: invalid source path")
+        console.error("vex: error: invalid source path")
         console.log("compilation aborted")
         process.exit(1)
     }
 
     const startTime = new Date().getTime()
-    console.log(`[${theTime()}]: vex: starting compilation`)
+    console.log(`vex: info: starting compilation`)
     
     const result: string = await codegen(await file.text())
     await Bun.write(output, result)
-    console.log(`[${theTime()}]: vex: wrote assembly in ${new Date().getTime() - startTime}ms`)
+    console.log(`vex: info: wrote assembly in ${new Date().getTime() - startTime}ms`)
     
     if (assemble) {
         const procStartTime = new Date().getTime()
         const proc = Bun.spawn(["nasm", "-felf64", output])
         await proc.exited
-        console.log(`[${theTime()}]: vex: assembled in ${new Date().getTime() - procStartTime}ms`)
+        console.log(`vex: info: assembled in ${new Date().getTime() - procStartTime}ms`)
 
         if (link) {
             const procStartTime = new Date().getTime()
             const proc = Bun.spawn(["ld", "-o", output.split(".")[0], output.split(".")[0] + ".o"])
             await proc.exited
-            console.log(`[${theTime()}]: vex: linked in ${new Date().getTime() - procStartTime}ms`)
+            console.log(`vex: info: linked in ${new Date().getTime() - procStartTime}ms`)
         }
     }
     
-    console.log(`[${theTime()}]: vex: compilation completed in ${new Date().getTime() - startTime}ms`)
+    console.log(`vex: info: compilation completed in ${new Date().getTime() - startTime}ms`)
 }

@@ -11,13 +11,11 @@ import parser from "./parser"
 import getValue from "../util/getValue.ts";
 import getKey from "../util/getKey.ts";
 import Instruction from "../enum/Instruction.ts";
-import Symbol from "../enum/Symbol.ts";
 import Type from "../enum/Type.ts";
-import Error from "../logger/Error.ts";
 
 export default async function (source: string) {
     let strings: string[] = []
-    const lines = await parser(source)
+    const tokens: string[] = await parser(source)
 
     let result = "BITS 64\n"
     result += "section .text\n"
@@ -56,108 +54,101 @@ export default async function (source: string) {
     result += "add rsp, 40\n"
     result += "ret\n"
     result += "global _start\n"
-    result += "_start:\n"
     
-    for (let line = 0; line < lines.length; line++) {
-        if (lines[line].length == 0) continue
+    for (let token = 0; token < tokens.length; token++) {
+        if (tokens[token] == "") continue
         
-        for (let token = 0; token < lines[line].length; token++) {
-            if (lines[line][token] == "") continue
+        const currentToken: string = tokens[token]
+        
+        if (currentToken == Instruction.ADD) {
+            result += `;; -- add --\n`
+            result += "pop rbx\n"
+            result += "pop rax\n"
+            result += "add rax, rbx\n"
+            result += "push rax\n"
+        } else if (currentToken == Instruction.SUB) {
+            result += `;; -- sub --\n`
+            result += "pop rax\n"
+            result += "pop rbx\n"
+            result += "sub rbx, rax\n"
+            result += "push rbx\n"
+        } else if (currentToken == Instruction.MUL) {
+            result += `;; -- mul --\n`
+            result += "pop rbx\n"
+            result += "pop rax\n"
+            result += "mul rbx\n"
+            result += "push rax\n"
+        } else if (currentToken == Instruction.DIV) {
+            result += `;; -- div --\n`
+            result += "pop rbx\n"
+            result += "pop rax\n"
+            result += "div rbx\n"
+            result += "push rax\n"
+        } else if (currentToken == Instruction.INC) {
+            result += `;; -- inc --\n`
+            result += "pop rax\n"
+            result += "inc rax\n"
+            result += "push rax\n"
+        } else if (currentToken == Instruction.DEC) {
+            result += `;; -- dec --\n`
+            result += "pop rax\n"
+            result += "dec rax\n"
+            result += "push rax\n"
+        } else if (currentToken == Instruction.ECHO) {
+            result += `;; -- echo --\n`
+            result += "pop rdi\n"
+            result += "call echo\n"
+        } else if (currentToken == Instruction.PUTS) {
+            result += "mov rax, 1\n"
+            result += "mov rdi, 1\n"
+            result += "pop rsi\n"
+            result += "pop rdx\n"
+            result += "syscall\n"
+            result += "push rax\n"
+        } else if (currentToken == Instruction.RET) {
+            result += `;; -- ret --\n`
+            result += ";; -- Not implemented --\n"
+        } else if (currentToken == Instruction.PUSH) {
+            const tokenArgument: string = tokens[token + 1]
+            result += `;; -- push ${getValue(tokenArgument)} --\n`
             
-            const currentToken: string = lines[line][token]
-            
-            if (currentToken == Instruction.ADD) {
-                result += `;; -- add --\n`
-                result += "pop rbx\n"
-                result += "pop rax\n"
-                result += "add rax, rbx\n"
-                result += "push rax\n"
-            } else if (currentToken == Instruction.SUB) {
-                result += `;; -- sub --\n`
-                result += "pop rax\n"
-                result += "pop rbx\n"
-                result += "sub rbx, rax\n"
-                result += "push rbx\n"
-            } else if (currentToken == Instruction.MUL) {
-                result += `;; -- mul --\n`
-                result += "pop rbx\n"
-                result += "pop rax\n"
-                result += "mul rbx\n"
-                result += "push rax\n"
-            } else if (currentToken == Instruction.DIV) {
-                result += `;; -- div --\n`
-                result += "pop rbx\n"
-                result += "pop rax\n"
-                result += "div rbx\n"
-                result += "push rax\n"
-            } else if (currentToken == Instruction.INC) {
-                result += `;; -- inc --\n`
-                result += "pop rax\n"
-                result += "inc rax\n"
-                result += "push rax\n"
-            } else if (currentToken == Instruction.DEC) {
-                result += `;; -- dec --\n`
-                result += "pop rax\n"
-                result += "dec rax\n"
-                result += "push rax\n"
-            } else if (currentToken == Instruction.ECHO) {
-                result += `;; -- echo --\n`
-                result += "pop rdi\n"
-                result += "call echo\n"
-            } else if (currentToken == Instruction.PUTS) {
-                result += "mov rax, 1\n"
-                result += "mov rdi, 1\n"
-                result += "pop rsi\n"
-                result += "pop rdx\n"
-                result += "syscall\n"
-                result += "push rax\n"
-            } else if (currentToken == Instruction.RET) {
-                result += `;; -- ret --\n`
-                result += ";; -- Not implemented --\n"
-            } else if (currentToken == Instruction.PUSH) {
-                const tokenArgument: string = lines[line][token + 1]
-
-                result += `;; -- push ${getValue(tokenArgument)} --\n`
-                
-                if (getKey(tokenArgument) == Type.STRING) {
-                    result += `mov rax, ${getValue(tokenArgument).length}\n`
-                    result += `push rax\n`
-                    result += `push str_${strings.length}\n`
-                    strings.push(getValue(tokenArgument))
-                } else {
-                    result += `mov rax, ${getValue(tokenArgument)}\n`
-                    result += `push rax\n`
-                }
-                
-                token++
-            } else if (currentToken == Instruction.EQUAL) {
-                result += ";; -- equal --\n"
-                result += "pop rax\n"
-                result += "pop rbx\n"
-                result += "cmp rax, rbx\n"
-                result += "sete al\n"
-                result += "push rax\n"
-            } else if (currentToken == Instruction.DUP) {
-                result += ";; -- dup --\n"
-                result += "pop rax\n"
-                result += "push rax\n"
-                result += "push rax\n"
-            } else if (currentToken == Instruction.FUN) {
-                const tokenArgument: string = lines[line][token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
-
-                result += `;; -- ${tokenArgument} --\n`
-                if (tokenArgument == "main") result += "_start:\n"
-                else result += `${tokenArgument}:\n`
-
-                token++
-            } else if (currentToken == Instruction.EXIT) {
-                result += ";; -- exit --\n"
-                result += "mov rax, 60\n"
-                result += "xor rdi, rdi\n"
-                result += "syscall\n"
+            if (getKey(tokenArgument) == Type.STRING) {
+                result += `mov rax, ${getValue(tokenArgument).length}\n`
+                result += `push rax\n`
+                result += `push str_${strings.length}\n`
+                strings.push(getValue(tokenArgument))
             } else {
-                throw new Error("unknown token found during code generation: " + currentToken, lines[line].join(" "))
+                result += `mov rax, ${getValue(tokenArgument)}\n`
+                result += `push rax\n`
             }
+            
+            token++
+        } else if (currentToken == Instruction.EQUAL) {
+            result += ";; -- equal --\n"
+            result += "pop rax\n"
+            result += "pop rbx\n"
+            result += "cmp rax, rbx\n"
+            result += "sete al\n"
+            result += "push rax\n"
+        } else if (currentToken == Instruction.DUP) {
+            result += ";; -- dup --\n"
+            result += "pop rax\n"
+            result += "push rax\n"
+            result += "push rax\n"
+        } else if (currentToken == Instruction.FUN) {
+            const tokenArgument: string = tokens[token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
+            result += `;; -- ${tokenArgument} --\n`
+            if (tokenArgument == "main") result += "_start:\n"
+            else result += `${tokenArgument}:\n`
+            token++
+        } else if (currentToken == Instruction.EXIT) {
+            result += ";; -- exit --\n"
+            result += "mov rax, 60\n"
+            result += "xor rdi, rdi\n"
+            result += "syscall\n"
+        } else {
+            console.log("unknown token found during code generation: " + currentToken)
+            process.exit(1)
         }
     }
     
