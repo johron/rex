@@ -34,14 +34,7 @@ export default function (tokenString: string) {
         
         if (c == "\t" || c == "\f" || c == "\n" || c == "\r" || c == " ") continue
         
-        if (has("//", tokens, token)) {
-            for (let i = token; token < tokens.length; token++) {
-                if (tokens[token] == "\n") {
-                    token = i
-                    break
-                }
-            }
-        } else if (has("add", tokens, token)) {
+        if (has("add", tokens, token)) {
             tokenArr.push(Instruction.ADD)
             token += 2
         } else if (has("sub", tokens, token)) {
@@ -59,12 +52,12 @@ export default function (tokenString: string) {
         } else if (has("dec", tokens, token)) {
             tokenArr.push(Instruction.DEC)
             token += 2
-        } else if (has("echo", tokens, token)) {
-            tokenArr.push(Instruction.ECHO)
-            token += 3
         } else if (has("puts", tokens, token)) {
             tokenArr.push(Instruction.PUTS)
             token += 3
+        } else if (has("put", tokens, token)) {
+            tokenArr.push(Instruction.PUT)
+            token += 2
         } else if (has("ret", tokens, token)) {
             tokenArr.push(Instruction.RET)
             token += 2

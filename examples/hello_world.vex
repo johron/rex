@@ -1,7 +1,4 @@
-// This code may not work in the future
-
-// Hello World program in vex
-
-push "Hello, World!\n"
-run echos
-exit
+fun main do
+    push "Hello, World!\n" puts
+    exit
+end

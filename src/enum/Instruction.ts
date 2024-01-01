@@ -14,7 +14,7 @@ enum Instruction {
     DIV = "DIV",
     INC = "INC",
     DEC = "DEC",
-    ECHO = "ECHO",
+    PUT = "PUT",
     PUTS = "PUTS",
     RET = "RET",
     PUSH = "PUSH",

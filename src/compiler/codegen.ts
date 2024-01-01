@@ -19,8 +19,8 @@ export default async function (source: string) {
 
     let result = "BITS 64\n"
     result += "section .text\n"
-    result += ";; -- echo --\n"
-    result += "echo:\n"
+    result += ";; -- put --\n"
+    result += "put:\n"
     result += "mov r9, -3689348814741910323\n"
     result += "sub rsp, 40\n"
     result += "mov BYTE [rsp+31], 10\n"
@@ -94,11 +94,12 @@ export default async function (source: string) {
             result += "pop rax\n"
             result += "dec rax\n"
             result += "push rax\n"
-        } else if (currentToken == Instruction.ECHO) {
-            result += `;; -- echo --\n`
+        } else if (currentToken == Instruction.PUT) {
+            result += `;; -- put --\n`
             result += "pop rdi\n"
-            result += "call echo\n"
+            result += "call put\n"
         } else if (currentToken == Instruction.PUTS) {
+            result += `;; -- puts --\n`
             result += "mov rax, 1\n"
             result += "mov rdi, 1\n"
             result += "pop rsi\n"
