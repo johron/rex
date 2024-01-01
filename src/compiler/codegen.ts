@@ -114,7 +114,7 @@ export default async function (source: string) {
             result += `;; -- push ${getValue(tokenArgument)} --\n`
             
             if (getKey(tokenArgument) == Type.STRING) {
-                result += `mov rax, ${getValue(tokenArgument).length}\n`
+                result += `mov rax, ${getValue(tokenArgument).length + 1}\n`
                 result += `push rax\n`
                 result += `push str_${strings.length}\n`
                 strings.push(getValue(tokenArgument))
@@ -122,6 +122,10 @@ export default async function (source: string) {
                 result += `mov rax, ${getValue(tokenArgument)}\n`
                 result += `push rax\n`
             }
+            
+            console.log()
+            console.log(tokenArgument, tokenArgument.length)
+            console.log(getValue(tokenArgument), getValue(tokenArgument).length)
             
             token++
         } else if (currentToken == Instruction.EQUAL) {

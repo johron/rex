@@ -140,5 +140,6 @@ export default function (tokenString: string) {
         }
     }
     
+    console.log(tokenArr)
     return tokenArr
 }
