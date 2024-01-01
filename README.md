@@ -39,8 +39,11 @@ or
 ```bash
 bun run ./vex.js <source> <output>
 ```
+optional arguments:
+`-a: assemble`, `-l: link` (`-l is ignored without -a`)
 
 ## Assemble and link the assembly
+Unnecessary if you used the `-a` and `-l` flags
 ```bash
 nasm -felf64 build/<file>.asm
 ld -o build/<file> build/<file>.o
