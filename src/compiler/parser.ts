@@ -47,7 +47,6 @@ export default async function (source: string) {
             tokenArr[token] = ""
         }
     }
-    
-    console.log(tokenArr)
+
     return tokenArr
 }

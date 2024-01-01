@@ -139,7 +139,6 @@ export default function (tokenString: string) {
             process.exit(1)
         }
     }
-    
-    console.log(tokenArr)
+
     return tokenArr
 }
