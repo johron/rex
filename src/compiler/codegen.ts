@@ -162,7 +162,7 @@ export default async function (source: string) {
         const byteArray: number[] = Array.from(Buffer.from(strings[string], 'utf-8'));
         let hexString: string = byteArray.map(num => "0x" + num.toString(16)).join(',');
         hexString = hexString.replaceAll("0x5c,0x6e", "0xA")
-        hexString = "0x02," + hexString + ",0x03"
+        //hexString = "0x02," + hexString + ",0x03"
         result += `str_${string}: db ${hexString}\n`
     }
     
