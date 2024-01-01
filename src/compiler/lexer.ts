@@ -104,7 +104,7 @@ export default function (tokenString: string) {
             else token += j - token
 
             if (number.includes(".")) tokenArr.push(Type.FLOAT + ":" + number)
-            else tokenArr.push(Type.INTEGER + ":" + number)
+            else tokenArr.push(Type.NUMBER + ":" + number)
         } else if (c == '"') {
             let string: string = ''
             let j = token + 1

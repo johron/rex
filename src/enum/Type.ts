@@ -9,10 +9,9 @@
 
 enum Type {
     LITERAL = "LITERAL",
-    INTEGER = "INTEGER",
+    NUMBER = "NUMBER",
     FLOAT = "FLOAT",
     STRING = "STRING",
-    BOOLEAN = "BOOLEAN",
 }
 
 export default Type
