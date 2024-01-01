@@ -3,13 +3,6 @@ Vex is a hobby compiler for learning more about string manipulation and error ha
 
 `ONLY AVAILABLE FOR LINUX`
 
-## Features
-- Pushing to stack (push x)
-- Adding, subtracting, multiplying, and dividing (add, sub, mul, div)
-- Equality and inequality (equal)
-- Duplicate top element of stack (dup)
-- Outputting to standard output (echo)
-
 ## To-do list
 - [ ] Alternate sections and (functions?) other than _start and .text
 - [ ] Reading user input
