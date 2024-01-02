@@ -20,23 +20,23 @@ export default async function(args: string[], assemble: boolean, link: boolean) 
         process.exit(1)
     }
     
-    console.log("vex: info: starting compilation")
+    console.log("vex: info: stating")
     
     const result: string = await codegen(await file.text())
     await Bun.write(output, result)
-    console.log("vex: info: wrote assembly")
+    console.log("vex: info: wrote")
     
     if (assemble) {
         const proc = Bun.spawn(["nasm", "-felf64", output])
         await proc.exited
-        console.log("vex: info: assembled to object")
+        console.log("vex: info: assembled")
 
         if (link) {
             const proc = Bun.spawn(["ld", "-o", output.split(".")[0], output.split(".")[0] + ".o"])
             await proc.exited
-            console.log("vex: info: linked object")
+            console.log("vex: info: linked")
         }
     }
     
-    console.log("vex: info: compilation completed")
+    console.log("vex: info: completed")
 }
