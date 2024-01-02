@@ -34,25 +34,7 @@ export default function (tokenString: string) {
         
         if (c == "\t" || c == "\f" || c == "\n" || c == "\r" || c == " ") continue
         
-        if (has("add", tokens, token)) {
-            tokenArr.push(Instruction.ADD)
-            token += 2
-        } else if (has("sub", tokens, token)) {
-            tokenArr.push(Instruction.SUB)
-            token += 2
-        } else if (has("mul", tokens, token)) {
-            tokenArr.push(Instruction.MUL)
-            token += 2
-        } else if (has("div", tokens, token)) {
-            tokenArr.push(Instruction.DIV)
-            token += 2
-        } else if (has("inc", tokens, token)) {
-            tokenArr.push(Instruction.INC)
-            token += 2
-        } else if (has("dec", tokens, token)) {
-            tokenArr.push(Instruction.DEC)
-            token += 2
-        } else if (has("puts", tokens, token)) {
+        if (has("puts", tokens, token)) {
             tokenArr.push(Instruction.PUTS)
             token += 3
         } else if (has("put", tokens, token)) {
@@ -61,11 +43,23 @@ export default function (tokenString: string) {
         } else if (has("ret", tokens, token)) {
             tokenArr.push(Instruction.RET)
             token += 2
-        } else if (has("push", tokens, token)) {
+        /*} else if (has("push", tokens, token)) {
             tokenArr.push(Instruction.PUSH)
-            token += 3
+            token += 3*/
         } else if (has("dup", tokens, token)) {
             tokenArr.push(Instruction.DUP)
+            token += 2
+        } else if (has("swap", tokens, token)) {
+            tokenArr.push(Instruction.SWAP)
+            token += 3
+        } else if (has("drop", tokens, token)) {
+            tokenArr.push(Instruction.DROP)
+            token += 3
+        } else if (has("over", tokens, token)) {
+            tokenArr.push(Instruction.OVER)
+            token += 3
+        } else if (has("rot", tokens, token)) {
+            tokenArr.push(Instruction.ROT)
             token += 2
         } else if (has("equal", tokens, token)) {
             tokenArr.push(Instruction.EQUAL)
@@ -79,13 +73,23 @@ export default function (tokenString: string) {
         } else if (has("end", tokens, token)) {
             tokenArr.push(Instruction.END)
             token += 2
-        } else if (has("exit", tokens, token)) {
-            tokenArr.push(Instruction.EXIT)
-            token += 3
         } else if (has(",", tokens, token)) {
             tokenArr.push(Symbol.COMMA)
         } else if (has(".", tokens, token)) {
             tokenArr.push(Symbol.PERIOD)
+        } else if (has("++", tokens, token)) {
+            tokenArr.push(Symbol.DPLUS)
+            token += 1
+        } else if (has("+", tokens, token)) {
+            tokenArr.push(Symbol.PLUS)
+        } else if (has("--", tokens, token)) {
+            tokenArr.push(Symbol.DMINUS)
+        } else if (has("-", tokens, token)) {
+            tokenArr.push(Symbol.MINUS)
+        } else if (has("*", tokens, token)) {
+            tokenArr.push(Symbol.ASTERISK)
+        } else if (has("/", tokens, token)) {
+            tokenArr.push(Symbol.SLASH)
         } else if (isNumeric(c)) {
             let number = ""
             let j = token
@@ -103,6 +107,7 @@ export default function (tokenString: string) {
             if (broke) token += (j - token) - 1
             else token += j - token
 
+            tokenArr.push(Instruction.PUSH)
             if (number.includes(".")) tokenArr.push(Type.FLOAT + ":" + number)
             else tokenArr.push(Type.NUMBER + ":" + number)
         } else if (c == '"') {
@@ -117,8 +122,9 @@ export default function (tokenString: string) {
 
                 string += tokens[j]
             }
-
+            
             token += j - token
+            tokenArr.push(Instruction.PUSH)
             tokenArr.push(Type.STRING + ":" + string)
         } else if (isAlpha(c)) {
             let combined = ""

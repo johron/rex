@@ -12,6 +12,7 @@ import getValue from "../util/getValue.ts";
 import getKey from "../util/getKey.ts";
 import Instruction from "../enum/Instruction.ts";
 import Type from "../enum/Type.ts";
+import Symbol from "../enum/Symbol.ts";
 
 export default async function (source: string) {
     let strings: string[] = []
@@ -60,36 +61,36 @@ export default async function (source: string) {
         
         const currentToken: string = tokens[token]
         
-        if (currentToken == Instruction.ADD) {
+        if (currentToken == Symbol.PLUS) {
             result += `;; -- add --\n`
             result += "pop rbx\n"
             result += "pop rax\n"
             result += "add rax, rbx\n"
             result += "push rax\n"
-        } else if (currentToken == Instruction.SUB) {
+        } else if (currentToken == Symbol.MINUS) {
             result += `;; -- sub --\n`
             result += "pop rax\n"
             result += "pop rbx\n"
             result += "sub rbx, rax\n"
             result += "push rbx\n"
-        } else if (currentToken == Instruction.MUL) {
+        } else if (currentToken == Symbol.ASTERISK) {
             result += `;; -- mul --\n`
             result += "pop rbx\n"
             result += "pop rax\n"
             result += "mul rbx\n"
             result += "push rax\n"
-        } else if (currentToken == Instruction.DIV) {
+        } else if (currentToken == Symbol.SLASH) {
             result += `;; -- div --\n`
             result += "pop rbx\n"
             result += "pop rax\n"
             result += "div rbx\n"
             result += "push rax\n"
-        } else if (currentToken == Instruction.INC) {
+        } else if (currentToken == Symbol.DPLUS) {
             result += `;; -- inc --\n`
             result += "pop rax\n"
             result += "inc rax\n"
             result += "push rax\n"
-        } else if (currentToken == Instruction.DEC) {
+        } else if (currentToken == Symbol.DMINUS) {
             result += `;; -- dec --\n`
             result += "pop rax\n"
             result += "dec rax\n"
@@ -114,7 +115,11 @@ export default async function (source: string) {
             result += `;; -- push ${getValue(tokenArgument)} --\n`
             
             if (getKey(tokenArgument) == Type.STRING) {
-                result += `mov rax, ${getValue(tokenArgument).length + 1}\n`
+                const newlines = getValue(tokenArgument).split("\\n").length - 1
+                let toRemove = 0
+                if (newlines > 0) toRemove = 1
+                else toRemove = 0
+                result += `mov rax, ${getValue(tokenArgument).length - toRemove}\n`
                 result += `push rax\n`
                 result += `push str_${strings.length}\n`
                 strings.push(getValue(tokenArgument))
@@ -136,22 +141,46 @@ export default async function (source: string) {
             result += "pop rax\n"
             result += "push rax\n"
             result += "push rax\n"
+        } else if (currentToken == Instruction.SWAP) {
+            result += ";; -- swap --\n"
+            result += "pop rax\n"
+            result += "pop rbx\n"
+            result += "push rax\n"
+            result += "push rbx\n"
+        } else if (currentToken == Instruction.DROP) {
+            result += ";; -- drop --\n"
+            result += "pop rax\n"
+        } else if (currentToken == Instruction.OVER) {
+            result += ";; -- over --\n"
+            result += "pop rax\n"
+            result += "pop rbx\n"
+            result += "push rbx\n"
+            result += "push rax\n"
+            result += "push rbx\n"
+        } else if (currentToken == Instruction.ROT) {
+            result += ";; -- rot --\n"
+            result += "pop rax\n"
+            result += "pop rbx\n"
+            result += "pop rcx\n"
+            result += "push rbx\n"
+            result += "push rax\n"
+            result += "push rcx\n"
         } else if (currentToken == Instruction.FUN) {
             const tokenArgument: string = tokens[token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
             result += `;; -- ${tokenArgument} --\n`
             if (tokenArgument == "main") result += "_start:\n"
             else result += `${tokenArgument}:\n`
             token++
-        } else if (currentToken == Instruction.EXIT) {
-            result += ";; -- exit --\n"
-            result += "mov rax, 60\n"
-            result += "xor rdi, rdi\n"
-            result += "syscall\n"
         } else {
             console.log("unknown token found during code generation: " + currentToken)
             process.exit(1)
         }
     }
+
+    result += ";; -- exit --\n"
+    result += "mov rax, 60\n"
+    result += "xor rdi, rdi\n"
+    result += "syscall\n"
     
     result += "section .data\n"
     for (let string = 0; string < strings.length; string++) {

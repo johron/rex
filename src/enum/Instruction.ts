@@ -8,22 +8,19 @@
  */
 
 enum Instruction {
-    ADD = "ADD",
-    SUB = "SUB",
-    MUL = "MUL",
-    DIV = "DIV",
-    INC = "INC",
-    DEC = "DEC",
     PUT = "PUT",
     PUTS = "PUTS",
     RET = "RET",
     PUSH = "PUSH",
     DUP = "DUP",
+    SWAP = "SWAP",
+    DROP = "DROP",
+    OVER = "OVER",
+    ROT = "ROT",
     EQUAL = "EQUAL",
     FUN = "FUN",
     DO = "DO",
     END = "END",
-    EXIT = "EXIT",
 }
 
 export default Instruction

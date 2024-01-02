@@ -19,27 +19,24 @@ export default async function(args: string[], assemble: boolean, link: boolean) 
         console.log("compilation aborted")
         process.exit(1)
     }
-
-    const startTime = new Date().getTime()
-    console.log(`vex: info: starting compilation`)
+    
+    console.log("vex: info: starting compilation")
     
     const result: string = await codegen(await file.text())
     await Bun.write(output, result)
-    console.log(`vex: info: wrote assembly in ${new Date().getTime() - startTime}ms`)
+    console.log("vex: info: wrote assembly")
     
     if (assemble) {
-        const procStartTime = new Date().getTime()
         const proc = Bun.spawn(["nasm", "-felf64", output])
         await proc.exited
-        console.log(`vex: info: assembled in ${new Date().getTime() - procStartTime}ms`)
+        console.log("vex: info: assembled to object")
 
         if (link) {
-            const procStartTime = new Date().getTime()
             const proc = Bun.spawn(["ld", "-o", output.split(".")[0], output.split(".")[0] + ".o"])
             await proc.exited
-            console.log(`vex: info: linked in ${new Date().getTime() - procStartTime}ms`)
+            console.log("vex: info: linked object")
         }
     }
     
-    console.log(`vex: info: compilation completed in ${new Date().getTime() - startTime}ms`)
+    console.log("vex: info: compilation completed")
 }

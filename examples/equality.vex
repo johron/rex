@@ -1,6 +1,3 @@
 fun main do
-    push 12 
-    push 12
-    equal put
-    exit
+    12 12 equal put
 end
