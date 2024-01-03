@@ -1,12 +1,12 @@
 {
-  "name": "vex",
-  "description": "The Vex Compiler",
+  "name": "rex",
+  "description": "The Rex Compiler",
   "version": "0.2",
   "module": "src/index.ts",
   "type": "module",
   "scripts": {
     "start": "bun run .",
-    "bundle": "esbuild src/index.ts --bundle --platform=node --target=node18 --outfile=bundle/vex.js"
+    "bundle": "esbuild src/index.ts --bundle --platform=node --target=node18 --outfile=bundle/rex.js"
   },
   "devDependencies": {
     "@biomejs/biome": "1.4.1",

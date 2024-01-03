@@ -1,5 +1,5 @@
-# Vex
-Vex is a hobby compiler for learning more about string manipulation and error handling. I would hope to rewrite the language in itself when the base compiler is finished. Currently the compiler is being written in TypeScript using the Bun Runtime.
+# Rex
+Rex is a hobby compiler for learning more about string manipulation and error handling. I would hope to rewrite the language in itself when the base compiler is finished. Currently the compiler is being written in TypeScript using the Bun Runtime.
 
 `ONLY AVAILABLE FOR LINUX`
 
@@ -9,7 +9,7 @@ Vex is a hobby compiler for learning more about string manipulation and error ha
 - [ ] More error handling
 - [ ] Documentation
 - [ ] Better syntax
-- [ ] Rewrite in Vex
+- [ ] Rewrite in Rex
 
 ## Dependencies
 - [Bun](https://bun.sh)
@@ -22,7 +22,7 @@ Vex is a hobby compiler for learning more about string manipulation and error ha
 bun run bundle
 ```
 
-## Run vex compiler
+## Run rex compiler
 `source version`
 ```bash
 bun start <source> <output>
@@ -30,7 +30,7 @@ bun start <source> <output>
 or
 `bundled version`
 ```bash
-bun run ./vex.js <source> <output>
+bun run ./rex.js <source> <output>
 ```
 optional arguments:
 `-a: assemble`, `-l: link` (`-l is ignored without -a`)
