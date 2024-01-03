@@ -1,8 +1,6 @@
 import isAlpha from "../util/isAlpha"
 import isNumeric from "../util/isNumeric"
-import Instruction from "../enum/Instruction.ts";
-import Symbol from "../enum/Symbol.ts";
-import Type from "../enum/Type.ts";
+import {Token} from "./enum.ts";
 
 function has(check: string, fromArr: string[], startIndex: number) {
     let checkArr = check.split("")
@@ -26,61 +24,61 @@ export default function (tokenString: string) {
         if (c == "\t" || c == "\f" || c == "\n" || c == "\r" || c == " ") continue
         
         if (has("puts", tokens, token)) {
-            tokenArr.push(Instruction.PUTS)
+            tokenArr.push(Token.PUTS)
             token += 3
         } else if (has("put", tokens, token)) {
-            tokenArr.push(Instruction.PUT)
+            tokenArr.push(Token.PUT)
             token += 2
         } else if (has("ret", tokens, token)) {
-            tokenArr.push(Instruction.RET)
+            tokenArr.push(Token.RET)
             token += 2
         /*} else if (has("push", tokens, token)) {
-            tokenArr.push(Instruction.PUSH)
+            tokenArr.push(Token.PUSH)
             token += 3*/
         } else if (has("dup", tokens, token)) {
-            tokenArr.push(Instruction.DUP)
+            tokenArr.push(Token.DUP)
             token += 2
         } else if (has("swap", tokens, token)) {
-            tokenArr.push(Instruction.SWAP)
+            tokenArr.push(Token.SWAP)
             token += 3
         } else if (has("drop", tokens, token)) {
-            tokenArr.push(Instruction.DROP)
+            tokenArr.push(Token.DROP)
             token += 3
         } else if (has("over", tokens, token)) {
-            tokenArr.push(Instruction.OVER)
+            tokenArr.push(Token.OVER)
             token += 3
         } else if (has("rot", tokens, token)) {
-            tokenArr.push(Instruction.ROT)
+            tokenArr.push(Token.ROT)
             token += 2
         } else if (has("equal", tokens, token)) {
-            tokenArr.push(Instruction.EQUAL)
+            tokenArr.push(Token.EQUAL)
             token += 4
         } else if (has("fun", tokens, token)) {
-            tokenArr.push(Instruction.FUN)
+            tokenArr.push(Token.FUN)
             token += 3
         } else if (has("do", tokens, token)) {
-            tokenArr.push(Instruction.DO)
+            tokenArr.push(Token.DO)
             token += 1
         } else if (has("end", tokens, token)) {
-            tokenArr.push(Instruction.END)
+            tokenArr.push(Token.END)
             token += 2
         } else if (has(",", tokens, token)) {
-            tokenArr.push(Symbol.COMMA)
+            tokenArr.push(Token.COMMA)
         } else if (has(".", tokens, token)) {
-            tokenArr.push(Symbol.PERIOD)
+            tokenArr.push(Token.PERIOD)
         } else if (has("++", tokens, token)) {
-            tokenArr.push(Symbol.DPLUS)
+            tokenArr.push(Token.DPLUS)
             token += 1
         } else if (has("+", tokens, token)) {
-            tokenArr.push(Symbol.PLUS)
+            tokenArr.push(Token.PLUS)
         } else if (has("--", tokens, token)) {
-            tokenArr.push(Symbol.DMINUS)
+            tokenArr.push(Token.DMINUS)
         } else if (has("-", tokens, token)) {
-            tokenArr.push(Symbol.MINUS)
+            tokenArr.push(Token.MINUS)
         } else if (has("*", tokens, token)) {
-            tokenArr.push(Symbol.ASTERISK)
+            tokenArr.push(Token.ASTERISK)
         } else if (has("/", tokens, token)) {
-            tokenArr.push(Symbol.SLASH)
+            tokenArr.push(Token.SLASH)
         } else if (isNumeric(c)) {
             let number = ""
             let j = token
@@ -98,9 +96,9 @@ export default function (tokenString: string) {
             if (broke) token += (j - token) - 1
             else token += j - token
 
-            tokenArr.push(Instruction.PUSH)
-            if (number.includes(".")) tokenArr.push(Type.FLOAT + ":" + number)
-            else tokenArr.push(Type.NUMBER + ":" + number)
+            tokenArr.push(Token.PUSH)
+            if (number.includes(".")) tokenArr.push(Token.FLOAT + ":" + number)
+            else tokenArr.push(Token.NUMBER + ":" + number)
         } else if (c == '"') {
             let string: string = ''
             let j = token + 1
@@ -115,8 +113,8 @@ export default function (tokenString: string) {
             }
             
             token += j - token
-            tokenArr.push(Instruction.PUSH)
-            tokenArr.push(Type.STRING + ":" + string)
+            tokenArr.push(Token.PUSH)
+            tokenArr.push(Token.STRING + ":" + string)
         } else if (isAlpha(c)) {
             let combined = ""
             let j = token
@@ -130,7 +128,7 @@ export default function (tokenString: string) {
             }
 
             token += j - token - 1
-            tokenArr.push(Type.LITERAL + ":" + combined)
+            tokenArr.push(Token.IDENTIFIER + ":" + combined)
         } else {
             console.log("unexpected token found during lexing: " + c)
             process.exit(1)

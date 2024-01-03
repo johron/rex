@@ -1,9 +1,7 @@
 import parser from "./parser"
 import getValue from "../util/getValue.ts";
 import getKey from "../util/getKey.ts";
-import Instruction from "../enum/Instruction.ts";
-import Type from "../enum/Type.ts";
-import Symbol from "../enum/Symbol.ts";
+import { Token } from "./enum.ts"
 
 export default async function (source: string) {
     let strings: string[] = []
@@ -52,45 +50,45 @@ export default async function (source: string) {
         
         const currentToken: string = tokens[token]
         
-        if (currentToken == Symbol.PLUS) {
+        if (currentToken == Token.PLUS) {
             result += `;; -- add --\n`
             result += "pop rbx\n"
             result += "pop rax\n"
             result += "add rax, rbx\n"
             result += "push rax\n"
-        } else if (currentToken == Symbol.MINUS) {
+        } else if (currentToken == Token.MINUS) {
             result += `;; -- sub --\n`
             result += "pop rax\n"
             result += "pop rbx\n"
             result += "sub rbx, rax\n"
             result += "push rbx\n"
-        } else if (currentToken == Symbol.ASTERISK) {
+        } else if (currentToken == Token.ASTERISK) {
             result += `;; -- mul --\n`
             result += "pop rbx\n"
             result += "pop rax\n"
             result += "mul rbx\n"
             result += "push rax\n"
-        } else if (currentToken == Symbol.SLASH) {
+        } else if (currentToken == Token.SLASH) {
             result += `;; -- div --\n`
             result += "pop rbx\n"
             result += "pop rax\n"
             result += "div rbx\n"
             result += "push rax\n"
-        } else if (currentToken == Symbol.DPLUS) {
+        } else if (currentToken == Token.DPLUS) {
             result += `;; -- inc --\n`
             result += "pop rax\n"
             result += "inc rax\n"
             result += "push rax\n"
-        } else if (currentToken == Symbol.DMINUS) {
+        } else if (currentToken == Token.DMINUS) {
             result += `;; -- dec --\n`
             result += "pop rax\n"
             result += "dec rax\n"
             result += "push rax\n"
-        } else if (currentToken == Instruction.PUT) {
+        } else if (currentToken == Token.PUT) {
             result += `;; -- put --\n`
             result += "pop rdi\n"
             result += "call put\n"
-        } else if (currentToken == Instruction.PUTS) {
+        } else if (currentToken == Token.PUTS) {
             result += `;; -- puts --\n`
             result += "mov rax, 1\n"
             result += "mov rdi, 1\n"
@@ -98,14 +96,14 @@ export default async function (source: string) {
             result += "pop rdx\n"
             result += "syscall\n"
             result += "push rax\n"
-        } else if (currentToken == Instruction.RET) {
+        } else if (currentToken == Token.RET) {
             result += `;; -- ret --\n`
             result += ";; -- Not implemented --\n"
-        } else if (currentToken == Instruction.PUSH) {
+        } else if (currentToken == Token.PUSH) {
             const tokenArgument: string = tokens[token + 1]
             result += `;; -- push ${getValue(tokenArgument)} --\n`
             
-            if (getKey(tokenArgument) == Type.STRING) {
+            if (getKey(tokenArgument) == Token.STRING) {
                 const newlines = getValue(tokenArgument).split("\\n").length - 1
                 let toRemove = 0
                 if (newlines > 0) toRemove = 1
@@ -120,35 +118,35 @@ export default async function (source: string) {
             }
             
             token++
-        } else if (currentToken == Instruction.EQUAL) {
+        } else if (currentToken == Token.EQUAL) {
             result += ";; -- equal --\n"
             result += "pop rax\n"
             result += "pop rbx\n"
             result += "cmp rax, rbx\n"
             result += "sete al\n"
             result += "push rax\n"
-        } else if (currentToken == Instruction.DUP) {
+        } else if (currentToken == Token.DUP) {
             result += ";; -- dup --\n"
             result += "pop rax\n"
             result += "push rax\n"
             result += "push rax\n"
-        } else if (currentToken == Instruction.SWAP) {
+        } else if (currentToken == Token.SWAP) {
             result += ";; -- swap --\n"
             result += "pop rax\n"
             result += "pop rbx\n"
             result += "push rax\n"
             result += "push rbx\n"
-        } else if (currentToken == Instruction.DROP) {
+        } else if (currentToken == Token.DROP) {
             result += ";; -- drop --\n"
             result += "pop rax\n"
-        } else if (currentToken == Instruction.OVER) {
+        } else if (currentToken == Token.OVER) {
             result += ";; -- over --\n"
             result += "pop rax\n"
             result += "pop rbx\n"
             result += "push rbx\n"
             result += "push rax\n"
             result += "push rbx\n"
-        } else if (currentToken == Instruction.ROT) {
+        } else if (currentToken == Token.ROT) {
             result += ";; -- rot --\n"
             result += "pop rax\n"
             result += "pop rbx\n"
@@ -156,7 +154,7 @@ export default async function (source: string) {
             result += "push rbx\n"
             result += "push rax\n"
             result += "push rcx\n"
-        } else if (currentToken == Instruction.FUN) {
+        } else if (currentToken == Token.FUN) {
             const tokenArgument: string = tokens[token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
             result += `;; -- ${tokenArgument} --\n`
             if (tokenArgument == "main") result += "_start:\n"
