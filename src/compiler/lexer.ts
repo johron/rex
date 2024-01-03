@@ -1,6 +1,7 @@
 import isAlpha from "../util/isAlpha"
 import isNumeric from "../util/isNumeric"
 import {Token} from "./enum.ts";
+import isIdentifier from "../util/isIdentifier.ts";
 
 function has(check: string, fromArr: string[], startIndex: number) {
     let checkArr = check.split("")
@@ -118,12 +119,12 @@ export default function (tokenString: string) {
             token += j - token
             tokenArr.push(Token.PUSH)
             tokenArr.push(Token.STRING + ":" + string)
-        } else if (isAlpha(c)) {
+        } else if (isIdentifier(c)) {
             let combined = ""
             let j = token
 
             for (j; j < tokens.length; j++) {
-                if (isAlpha(tokens[j])) {
+                if (isIdentifier(tokens[j])) {
                     combined += tokens[j]
                 } else {
                     break
