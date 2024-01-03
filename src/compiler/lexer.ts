@@ -30,15 +30,6 @@ export default function (tokenString: string) {
         } else if (has("put", tokens, token)) {
             tokenArr.push(Token.PUT)
             token += 2
-        } else if (has("ret", tokens, token)) {
-            tokenArr.push(Token.RET)
-            token += 2
-        /*} else if (has("push", tokens, token)) {
-            tokenArr.push(Token.PUSH)
-            token += 3*/
-        } else if (has("dup", tokens, token)) {
-            tokenArr.push(Token.DUP)
-            token += 2
         } else if (has("swap", tokens, token)) {
             tokenArr.push(Token.SWAP)
             token += 3
@@ -51,9 +42,6 @@ export default function (tokenString: string) {
         } else if (has("rot", tokens, token)) {
             tokenArr.push(Token.ROT)
             token += 2
-        } else if (has("equal", tokens, token)) {
-            tokenArr.push(Token.EQUAL)
-            token += 4
         } else if (has("fun", tokens, token)) {
             tokenArr.push(Token.FUN)
             token += 3
@@ -70,19 +58,24 @@ export default function (tokenString: string) {
             tokenArr.push(Token.COMMA)
         } else if (has(".", tokens, token)) {
             tokenArr.push(Token.PERIOD)
+        } else if (has("=", tokens, token)) {
+            tokenArr.push(Token.EQUAL)
+        } else if (has("&", tokens, token)) {
+            tokenArr.push(Token.DUP)
         } else if (has("++", tokens, token)) {
-            tokenArr.push(Token.DPLUS)
+            tokenArr.push(Token.INC)
+            token += 1
+        } else if (has("--", tokens, token)) {
+            tokenArr.push(Token.DEC)
             token += 1
         } else if (has("+", tokens, token)) {
-            tokenArr.push(Token.PLUS)
-        } else if (has("--", tokens, token)) {
-            tokenArr.push(Token.DMINUS)
+            tokenArr.push(Token.ADD)
         } else if (has("-", tokens, token)) {
-            tokenArr.push(Token.MINUS)
+            tokenArr.push(Token.SUB)
         } else if (has("*", tokens, token)) {
-            tokenArr.push(Token.ASTERISK)
+            tokenArr.push(Token.MUL)
         } else if (has("/", tokens, token)) {
-            tokenArr.push(Token.SLASH)
+            tokenArr.push(Token.DIV)
         } else if (isNumeric(c)) {
             let number = ""
             let j = token

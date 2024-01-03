@@ -1,8 +1,13 @@
 export enum Token {
     // Keywords
+    ADD = "ADD",
+    SUB = "SUB",
+    MUL = "MUL",
+    DIV = "DIV",
+    INC = "INC",
+    DEC = "DEC",
     PUT = "PUT",
     PUTS = "PUTS",
-    RET = "RET",
     PUSH = "PUSH",
     DUP = "DUP",
     SWAP = "SWAP",
@@ -21,14 +26,8 @@ export enum Token {
     FLOAT = "FLOAT",
     STRING = "STRING",
     TUNNEL = "TUNNEL",
-
+    
     // Symbols
-    PLUS = "PLUS",
-    DPLUS = "DPLUS",
-    MINUS = "MINUS",
-    DMINUS = "DMINUS",
-    ASTERISK = "ASTERISK",
-    SLASH = "SLASH",
     COMMA = "COMMA",
     PERIOD = "PERIOD",
 }

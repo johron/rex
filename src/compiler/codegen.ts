@@ -50,36 +50,36 @@ export default async function (source: string) {
         
         const currentToken: string = tokens[token]
         
-        if (currentToken == Token.PLUS) {
+        if (currentToken == Token.ADD) {
             result += `;; -- add --\n`
             result += "pop rbx\n"
             result += "pop rax\n"
             result += "add rax, rbx\n"
             result += "push rax\n"
-        } else if (currentToken == Token.MINUS) {
+        } else if (currentToken == Token.SUB) {
             result += `;; -- sub --\n`
             result += "pop rax\n"
             result += "pop rbx\n"
             result += "sub rbx, rax\n"
             result += "push rbx\n"
-        } else if (currentToken == Token.ASTERISK) {
+        } else if (currentToken == Token.MUL) {
             result += `;; -- mul --\n`
             result += "pop rbx\n"
             result += "pop rax\n"
             result += "mul rbx\n"
             result += "push rax\n"
-        } else if (currentToken == Token.SLASH) {
+        } else if (currentToken == Token.DIV) {
             result += `;; -- div --\n`
             result += "pop rbx\n"
             result += "pop rax\n"
             result += "div rbx\n"
             result += "push rax\n"
-        } else if (currentToken == Token.DPLUS) {
+        } else if (currentToken == Token.INC) {
             result += `;; -- inc --\n`
             result += "pop rax\n"
             result += "inc rax\n"
             result += "push rax\n"
-        } else if (currentToken == Token.DMINUS) {
+        } else if (currentToken == Token.DEC) {
             result += `;; -- dec --\n`
             result += "pop rax\n"
             result += "dec rax\n"
@@ -96,9 +96,6 @@ export default async function (source: string) {
             result += "pop rdx\n"
             result += "syscall\n"
             result += "push rax\n"
-        } else if (currentToken == Token.RET) {
-            result += `;; -- ret --\n`
-            result += ";; -- Not implemented --\n"
         } else if (currentToken == Token.PUSH) {
             const tokenArgument: string = tokens[token + 1]
             result += `;; -- push ${getValue(tokenArgument)} --\n`
