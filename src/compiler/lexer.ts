@@ -64,7 +64,7 @@ export default function (tokenString: string) {
             token += 2
         } else if (has("tunl", tokens, token)) {
             tokenArr.push(Token.TUNL)
-            token += 5
+            token += 3
         } else if (has(",", tokens, token)) {
             tokenArr.push(Token.COMMA)
         } else if (has(".", tokens, token)) {
