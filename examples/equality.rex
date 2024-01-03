@@ -1,3 +1,3 @@
 fun main do
-    12 12 equal put
+    12 12 = put
 end

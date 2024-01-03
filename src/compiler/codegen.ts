@@ -117,11 +117,13 @@ export default async function (source: string) {
             token++
         } else if (currentToken == Token.EQUAL) {
             result += ";; -- equal --\n"
+            result += "mov rcx, 0\n"
+            result += "mov rdx, 1\n"
             result += "pop rax\n"
             result += "pop rbx\n"
             result += "cmp rax, rbx\n"
-            result += "sete al\n"
-            result += "push rax\n"
+            result += "cmove rcx, rdx\n"
+            result += "push rcx\n"
         } else if (currentToken == Token.DUP) {
             result += ";; -- dup --\n"
             result += "pop rax\n"
