@@ -2,6 +2,7 @@ import parser from "./parser"
 import getValue from "../util/getValue.ts";
 import getKey from "../util/getKey.ts";
 import { Token } from "./enum.ts"
+import {peek} from "bun";
 
 export default async function (source: string) {
     let strings: string[] = []
@@ -10,7 +11,7 @@ export default async function (source: string) {
     let result = "BITS 64\n"
     result += "section .text\n"
     result += ";; -- put --\n"
-    result += "put:\n"
+    result += "putn:\n"
     result += "mov r9, -3689348814741910323\n"
     result += "sub rsp, 40\n"
     result += "mov BYTE [rsp+31], 10\n"
@@ -50,45 +51,45 @@ export default async function (source: string) {
         
         const currentToken: string = tokens[token]
         
-        if (currentToken == Token.ADD) {
+        if (currentToken == Token.KEYWORD_ADD) {
             result += `;; -- add --\n`
             result += "pop rbx\n"
             result += "pop rax\n"
             result += "add rax, rbx\n"
             result += "push rax\n"
-        } else if (currentToken == Token.SUB) {
+        } else if (currentToken == Token.KEYWORD_SUB) {
             result += `;; -- sub --\n`
             result += "pop rax\n"
             result += "pop rbx\n"
             result += "sub rbx, rax\n"
             result += "push rbx\n"
-        } else if (currentToken == Token.MUL) {
+        } else if (currentToken == Token.KEYWORD_MUL) {
             result += `;; -- mul --\n`
             result += "pop rbx\n"
             result += "pop rax\n"
             result += "mul rbx\n"
             result += "push rax\n"
-        } else if (currentToken == Token.DIV) {
+        } else if (currentToken == Token.KEYWORD_DIV) {
             result += `;; -- div --\n`
             result += "pop rbx\n"
             result += "pop rax\n"
             result += "div rbx\n"
             result += "push rax\n"
-        } else if (currentToken == Token.INC) {
+        } else if (currentToken == Token.KEYWORD_INC) {
             result += `;; -- inc --\n`
             result += "pop rax\n"
             result += "inc rax\n"
             result += "push rax\n"
-        } else if (currentToken == Token.DEC) {
+        } else if (currentToken == Token.KEYWORD_DEC) {
             result += `;; -- dec --\n`
             result += "pop rax\n"
             result += "dec rax\n"
             result += "push rax\n"
-        } else if (currentToken == Token.PUT) {
-            result += `;; -- put --\n`
+        } else if (currentToken == Token.KEYWORD_PUTN) {
+            result += `;; -- putn --\n`
             result += "pop rdi\n"
-            result += "call put\n"
-        } else if (currentToken == Token.PUTS) {
+            result += "call putn\n"
+        } else if (currentToken == Token.KEYWORD_PUTS) {
             result += `;; -- puts --\n`
             result += "mov rax, 1\n"
             result += "mov rdi, 1\n"
@@ -96,11 +97,11 @@ export default async function (source: string) {
             result += "pop rdx\n"
             result += "syscall\n"
             result += "push rax\n"
-        } else if (currentToken == Token.PUSH) {
+        } else if (currentToken == Token.KEYWORD_PUSH) {
             const tokenArgument: string = tokens[token + 1]
             result += `;; -- push ${getValue(tokenArgument)} --\n`
             
-            if (getKey(tokenArgument) == Token.STRING) {
+            if (getKey(tokenArgument) == Token.TYPE_STRING) {
                 const newlines = getValue(tokenArgument).split("\\n").length - 1
                 let toRemove = 0
                 if (newlines > 0) toRemove = 1
@@ -115,7 +116,7 @@ export default async function (source: string) {
             }
             
             token++
-        } else if (currentToken == Token.EQUAL) {
+        } else if (currentToken == Token.KEYWORD_EQUAL) {
             result += ";; -- equal --\n"
             result += "mov rcx, 0\n"
             result += "mov rdx, 1\n"
@@ -124,28 +125,28 @@ export default async function (source: string) {
             result += "cmp rax, rbx\n"
             result += "cmove rcx, rdx\n"
             result += "push rcx\n"
-        } else if (currentToken == Token.DUP) {
+        } else if (currentToken == Token.KEYWORD_DUP) {
             result += ";; -- dup --\n"
             result += "pop rax\n"
             result += "push rax\n"
             result += "push rax\n"
-        } else if (currentToken == Token.SWAP) {
+        } else if (currentToken == Token.KEYWORD_SWAP) {
             result += ";; -- swap --\n"
             result += "pop rax\n"
             result += "pop rbx\n"
             result += "push rax\n"
             result += "push rbx\n"
-        } else if (currentToken == Token.DROP) {
+        } else if (currentToken == Token.KEYWORD_DROP) {
             result += ";; -- drop --\n"
             result += "pop rax\n"
-        } else if (currentToken == Token.OVER) {
+        } else if (currentToken == Token.KEYWORD_OVER) {
             result += ";; -- over --\n"
             result += "pop rax\n"
             result += "pop rbx\n"
             result += "push rbx\n"
             result += "push rax\n"
             result += "push rbx\n"
-        } else if (currentToken == Token.ROT) {
+        } else if (currentToken == Token.KEYWORD_ROT) {
             result += ";; -- rot --\n"
             result += "pop rax\n"
             result += "pop rbx\n"
@@ -153,18 +154,29 @@ export default async function (source: string) {
             result += "push rbx\n"
             result += "push rax\n"
             result += "push rcx\n"
-        } else if (currentToken == Token.FUN) {
+        } else if (currentToken == Token.KEYWORD_FUN) {
             const tokenArgument: string = tokens[token + 1].split(/:(?=(?:(?:[^"]*"){2})*[^"]*$)/)[1]
             result += `;; -- ${tokenArgument} --\n`
             if (tokenArgument == "main") result += "_start:\n"
             else result += `${tokenArgument}:\n`
             token++
-        } else if (getKey(currentToken) == Token.TUNNEL) {
+        } else if (getKey(currentToken) == Token.TYPE_PUTA) {
             const assembly = getValue(currentToken)
-            result += `;; -- tunnel --\n`
+            result += `;; -- puta --\n`
             result += assembly + "\n"
+        } else if (getKey(currentToken) == Token.TYPE_BIND) {
+            const bindCount = parseInt(getValue(currentToken))
+            console.log(bindCount)
+            
+            result += `;; -- bind --\n`
+            for (let i = 0; i < bindCount + 1; i++) {
+                result += "pop rax\n"
+                result += "push rax\n"
+            }
         } else {
-            console.log("unknown token found during code generation: " + currentToken)
+            if (currentToken == Token.KEYWORD_DO || currentToken == Token.KEYWORD_END) continue
+            
+            console.error("rex: error: unknown token found during code generation: " + currentToken)
             process.exit(1)
         }
     }

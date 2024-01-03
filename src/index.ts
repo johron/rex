@@ -25,7 +25,7 @@ let link = false
 if (options.a == true) assemble = true
 if (options.l == true) {
     if (!assemble) {
-        console.log("rex: warning: -l is ignored without -a")
+        console.warn("rex: warning: -l is ignored without -a")
     }
     link = true
 }
