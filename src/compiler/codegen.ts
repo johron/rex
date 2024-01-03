@@ -160,6 +160,10 @@ export default async function (source: string) {
             if (tokenArgument == "main") result += "_start:\n"
             else result += `${tokenArgument}:\n`
             token++
+        } else if (getKey(currentToken) == Token.TUNNEL) {
+            const assembly = getValue(currentToken)
+            result += `;; -- tunnel --\n`
+            result += assembly + "\n"
         } else {
             console.log("unknown token found during code generation: " + currentToken)
             process.exit(1)

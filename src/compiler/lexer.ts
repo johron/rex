@@ -62,6 +62,9 @@ export default function (tokenString: string) {
         } else if (has("end", tokens, token)) {
             tokenArr.push(Token.END)
             token += 2
+        } else if (has("tunnel", tokens, token)) {
+            tokenArr.push(Token.TUNL)
+            token += 5
         } else if (has(",", tokens, token)) {
             tokenArr.push(Token.COMMA)
         } else if (has(".", tokens, token)) {

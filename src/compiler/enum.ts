@@ -12,6 +12,7 @@ export enum Token {
     EQUAL = "EQUAL",
     FUN = "FUN",
     DO = "DO",
+    TUNL = "TUNL",
     END = "END",
     
     // Types
@@ -19,6 +20,7 @@ export enum Token {
     NUMBER = "NUMBER",
     FLOAT = "FLOAT",
     STRING = "STRING",
+    TUNNEL = "TUNNEL",
 
     // Symbols
     PLUS = "PLUS",
