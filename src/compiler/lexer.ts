@@ -25,66 +25,66 @@ export default function (tokenString: string) {
         if (c == "\t" || c == "\f" || c == "\n" || c == "\r" || c == " ") continue
         
         if (has("puts", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_PUTS)
+            tokenArr.push(Token.PUTS)
             token += 3
         } else if (has("putn", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_PUTN)
-            token += 2
+            tokenArr.push(Token.PUTN)
+            token += 3
         } else if (has("puta", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_PUTA)
+            tokenArr.push(Token.PUTA)
             token += 3
         } else if (has("fputs", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_FPUTS)
+            tokenArr.push(Token.FPUTS)
             token += 4
         } else if (has("fputn", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_FPUTN)
+            tokenArr.push(Token.FPUTN)
             token += 4
         } else if (has("swap", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_SWAP)
+            tokenArr.push(Token.SWAP)
             token += 3
         } else if (has("drop", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_DROP)
+            tokenArr.push(Token.DROP)
             token += 3
         } else if (has("over", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_OVER)
+            tokenArr.push(Token.OVER)
             token += 3
         } else if (has("rot", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_ROT)
+            tokenArr.push(Token.ROT)
             token += 2
         } else if (has("fun", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_FUN)
+            tokenArr.push(Token.FUN)
             token += 3
         } else if (has("do", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_DO)
+            tokenArr.push(Token.DO)
             token += 1
         } else if (has("end", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_END)
+            tokenArr.push(Token.END)
             token += 2
-        } else if (has("peek", tokens, token)) {
+        /*} else if (has("peek", tokens, token)) {
             tokenArr.push(Token.KEYWORD_PEEK)
-            token += 3
+            token += 3*/
         } else if (has(",", tokens, token)) {
-            tokenArr.push(Token.SYMBOL_COMMA)
+            tokenArr.push(Token.COMMA)
         } else if (has(".", tokens, token)) {
-            tokenArr.push(Token.SYMBOL_PERIOD)
+            tokenArr.push(Token.PERIOD)
         } else if (has("=", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_EQUAL)
+            tokenArr.push(Token.EQUAL)
         } else if (has("&", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_DUP)
+            tokenArr.push(Token.DUP)
         } else if (has("++", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_INC)
+            tokenArr.push(Token.INC)
             token += 1
         } else if (has("--", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_DEC)
+            tokenArr.push(Token.DEC)
             token += 1
         } else if (has("+", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_ADD)
+            tokenArr.push(Token.ADD)
         } else if (has("-", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_SUB)
+            tokenArr.push(Token.SUB)
         } else if (has("*", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_MUL)
+            tokenArr.push(Token.MUL)
         } else if (has("/", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_DIV)
+            tokenArr.push(Token.DIV)
         } else if (isNumeric(c)) {
             let number = ""
             let j = token
@@ -101,10 +101,9 @@ export default function (tokenString: string) {
 
             if (broke) token += (j - token) - 1
             else token += j - token
-
-            tokenArr.push(Token.KEYWORD_PUSH)
-            if (number.includes(".")) tokenArr.push(Token.TYPE_FLOAT + ":" + number)
-            else tokenArr.push(Token.TYPE_NUMBER + ":" + number)
+            
+            if (number.includes(".")) tokenArr.push(Token.FLOAT + ":" + number)
+            else tokenArr.push(Token.NUMBER + ":" + number)
         } else if (c == '"') {
             let string: string = ''
             let j = token + 1
@@ -119,8 +118,7 @@ export default function (tokenString: string) {
             }
             
             token += j - token
-            tokenArr.push(Token.KEYWORD_PUSH)
-            tokenArr.push(Token.TYPE_STRING + ":" + string)
+            tokenArr.push(Token.STRING + ":" + string)
         } else if (isIdentifier(c)) {
             let combined = ""
             let j = token
@@ -134,12 +132,14 @@ export default function (tokenString: string) {
             }
 
             token += j - token - 1
-            tokenArr.push(Token.TYPE_IDENTIFIER + ":" + combined)
+            tokenArr.push(Token.IDENTIFIER + ":" + combined)
         } else {
             console.error("rex: error: unexpected token found during lexing: " + c)
             process.exit(1)
         }
     }
 
+    console.log("tokens from lexer")
+    console.log(tokenArr)
     return tokenArr
 }

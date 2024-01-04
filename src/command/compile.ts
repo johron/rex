@@ -1,4 +1,4 @@
-import codegen from "../compiler/codegen";
+import codegen from "../compiler/codegen/nasm.ts";
 
 export default async function(args: string[], assemble: boolean, link: boolean) {
     const source: string = args[0]
