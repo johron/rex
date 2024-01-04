@@ -33,6 +33,12 @@ export default function (tokenString: string) {
         } else if (has("puta", tokens, token)) {
             tokenArr.push(Token.KEYWORD_PUTA)
             token += 3
+        } else if (has("fputs", tokens, token)) {
+            tokenArr.push(Token.KEYWORD_FPUTS)
+            token += 4
+        } else if (has("fputn", tokens, token)) {
+            tokenArr.push(Token.KEYWORD_FPUTN)
+            token += 4
         } else if (has("swap", tokens, token)) {
             tokenArr.push(Token.KEYWORD_SWAP)
             token += 3

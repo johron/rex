@@ -173,6 +173,8 @@ export default async function (source: string) {
                 result += "pop rax\n"
                 result += "push rax\n"
             }
+
+            console.log(tokens[token] + 2)
         } else {
             if (currentToken == Token.KEYWORD_DO || currentToken == Token.KEYWORD_END) continue
             

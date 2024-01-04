@@ -55,7 +55,7 @@ export default async function (source: string) {
                 }
                 
                 identifierCount++
-                tokenArr[i] = ""
+                //tokenArr[i] = ""
             }
             
             if (!hasDo) {
