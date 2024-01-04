@@ -112,8 +112,6 @@ export default async function (source: string) {
             newTokenArr.push(tokenArr[token])
         }
     }
-
-    console.log("tokens from parser")
-    console.log(newTokenArr)
+    
     return newTokenArr
 }

@@ -138,8 +138,6 @@ export default function (tokenString: string) {
             process.exit(1)
         }
     }
-
-    console.log("tokens from lexer")
-    console.log(tokenArr)
+    
     return tokenArr
 }
