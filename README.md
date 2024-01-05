@@ -1,5 +1,6 @@
 # Rex
 Rex is a hobby compiler for learning more about string manipulation and error handling. I would hope to rewrite the language in itself when the base compiler is finished. Currently the compiler is being written in TypeScript using the Bun Runtime.
+
 `ONLY AVAILABLE FOR LINUX`
 
 <img src="https://raw.githubusercontent.com/johanrong/image-host/main/rex.png" width="128" height="128"/>
