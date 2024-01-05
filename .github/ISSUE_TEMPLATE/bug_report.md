@@ -23,8 +23,9 @@ A clear and concise description of what you expected to happen.
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
 
-**Device (please complete the following information):**
+**Information (please complete the following information):**
  - OS: [e.g. Windows 11 with WSL 2.0 Ubuntu 22.04]
+ - Transpilation language: [e.g. nasm]
  - Rex Version [e.g. 1.0]
  - Bun version [e.g v1.0.21]
 
