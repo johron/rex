@@ -5,7 +5,7 @@
   "description": "The Rex Compiler",
   "type": "module",
   "scripts": {
-    "start": "bun run src/index.ts",
+    "start": "bun run src/index.ts"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
