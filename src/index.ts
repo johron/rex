@@ -18,13 +18,14 @@ let outputPath = ""
 
 if (argv[0] == "-v" || argv[0] == "--version") {
     console.log("rex: version: v" + version)
+    process.exit(0)
 } else if (argv[0] == "-h" || argv[0] == "--help") {
     console.log("usage: [option] <source> <output>")
     console.log("options:")
     console.log("  -v, --version    print version")
     console.log("  -h, --help       print help")
     console.log("  -p, --pause      pause compilation")
-    
+    process.exit(0)
 } else if (argv[0] == "-p" || argv[0] == "--pause") {
     pauseFlag = true
 } else {
