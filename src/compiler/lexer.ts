@@ -21,17 +21,25 @@ export default function (tokenString: string) {
     
     for (let token = 0; token < tokens.length; token++) {
         const c = tokens[token]
-        
+
         if (c == "\t" || c == "\f" || c == "\n" || c == "\r" || c == " ") continue
-        
-        if (has("puts", tokens, token)) {
+
+        if (has("::", tokens,  token)) {
+            // Comment token found
+            for (let i = token; i < tokens.length; i++) {
+                if (tokens[i] == "\n") {
+                    token += i - token
+                    break
+                }
+            }
+        } else if (has("puts", tokens, token)) {
             tokenArr.push(Token.PUTS)
             token += 3
         } else if (has("putn", tokens, token)) {
             tokenArr.push(Token.PUTN)
             token += 3
         } else if (has("puta", tokens, token)) {
-            tokenArr.push(Token.PUTA)
+            tokenArr.push(Token.EMIT)
             token += 3
         } else if (has("fputs", tokens, token)) {
             tokenArr.push(Token.FPUTS)
@@ -60,9 +68,9 @@ export default function (tokenString: string) {
         } else if (has("end", tokens, token)) {
             tokenArr.push(Token.END)
             token += 2
-        /*} else if (has("peek", tokens, token)) {
-            tokenArr.push(Token.KEYWORD_PEEK)
-            token += 3*/
+        } else if (has("peek", tokens, token)) {
+            tokenArr.push(Token.PEEK)
+            token += 3
         } else if (has(",", tokens, token)) {
             tokenArr.push(Token.COMMA)
         } else if (has(".", tokens, token)) {

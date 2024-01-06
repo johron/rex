@@ -5,6 +5,7 @@ import getFirst from "../../util/getFirst.ts";
 import GetMiddle from "../../util/getMiddle.ts"; 
 import getLast from "../../util/getLast.ts";
 import getMiddle from "../../util/getMiddle.ts";
+import GetFirst from "../../util/getFirst.ts";
 
 export default async function (source: string) {
     let strings: string[] = []
@@ -50,7 +51,7 @@ export default async function (source: string) {
     result += "  ret\n"
     
     result += "\nglobal _start\n"
-    result += "mov rax, ret_stack_end\n"
+    result += "mov rax, ret_stack\n"
     result += "mov [ret_stack_rsp], rax\n\n"
     
     for (let token = 0; token < tokens.length; token++) {
@@ -162,31 +163,32 @@ export default async function (source: string) {
             result += `;; -- ${getLast(currentToken)} --\n`
             if (getLast(currentToken) == "main") result += "_start:\n"
             else result += `${getLast(currentToken)}:\n`
-        } else if (getFirst(currentToken) == Token.PUTA) {
+        } else if (getFirst(currentToken) == Token.EMIT) {
             const assembly = getLast(currentToken)
-            result += `;; -- puta --\n`
+            result += `;; -- emit --\n`
             result += "  " + assembly + "\n"
-        /*} else if (getKey(currentToken) == Operation.BIND) {
+        } else if (getFirst(currentToken) == Token.BIND) {
             result += `;; -- bind --\n`
-            result += "mov rax, [ret_stack_rsp]\n"
-            result += `sub rax, ${bindArray.length * 8}\n`
-            result += "mov [ret_stack_rsp], rax\n"
+            result += `mov rax, [ret_stack_rsp]\n`
+            result += `mov [rax], rsp\n`
+            result += `add [ret_stack_rsp], 8\n`
             
             for (let i = 0; i < bindArray.length + 1; i++) {
                 result += `mov rbx, [rsp+${i * 8}]\n`
                 result += `mov [rax+${i * 8}], rbx\n`
             }
 
-            console.log(tokens[token])*/
-        /*} else if (getKey(currentToken) == Operation.PUSH_BIND) {
-            console.log(getKey(currentToken))
-            console.log(getType(currentToken))
-            console.log(getValue(currentToken))
+            console.log(tokens[token])
+        } else if (GetFirst(currentToken) == Token.PUSH_BIND) {
+            console.log(GetFirst(currentToken))
+            console.log(getMiddle(currentToken))
+            console.log(getLast(currentToken))
             
             result += `;; -- push bind --\n`
-            result += "mov rax, [ret_stack_rsp]\n"
-            result += `add rax, ${bindArray.length * 8}\n`
-            result += "push QWORD [rax]\n"*/
+            result += `mov rax, [ret_stack_rsp]\n`
+            result += `mov rax, [rax]\n`
+            result += `mov rax, [rax+${bindArray.length * 8}]\n`
+            result += `push rax\n`
         } else {
             if (currentToken == Token.DO || currentToken == Token.END) continue
             

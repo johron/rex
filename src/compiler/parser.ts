@@ -40,21 +40,21 @@ export default async function (source: string) {
                 console.error("rex: error: float contains multiple periods: " + tokenArr[token])
                 process.exit(1)
             }
-        } else if (tokenArr[token] == Token.PUTA) {
+        } else if (tokenArr[token] == Token.EMIT) {
             if (getFirst(tokenArr[token - 1]) != Token.STRING) {
                 console.error("rex: error: puta requires string before it")
                 process.exit(1)
             }
 
             const string = getLast(tokenArr[token - 1])
-            newTokenArr.push(Token.PUTA + ":" + string)
+            newTokenArr.push(Token.EMIT + ":" + string)
         } else if (getFirst(tokenArr[token]) == Token.NUMBER) {
             // implement other checks
             // if those checks fail then
             newTokenArr.push(Token.PUSH + ":" + tokenArr[token])
         } else if (getFirst(tokenArr[token]) == Token.STRING) {
-            if (tokenArr[token + 1] == Token.PUTA) {
-                tokenArr[token] = Token.PUTA + ":" + tokenArr[token]
+            if (tokenArr[token + 1] == Token.EMIT) {
+                tokenArr[token] = Token.EMIT + ":" + tokenArr[token]
                 tokenArr[token + 1] = ""
 
                 token --
@@ -70,23 +70,22 @@ export default async function (source: string) {
             
             newTokenArr.push(Token.FUN + ":" + tokenArr[token + 1])
             token++
-        /*} else if (tokenArr[token] == Token.KEYWORD_PEEK) {
-            console.log(tokenArr)
+        } else if (tokenArr[token] == Token.PEEK) {
             let hasDo = false
             let identifierCount = 0
             
             for (let i = token + 1; i < tokenArr.length; i++) {
-                if (tokenArr[i] == Token.KEYWORD_DO) {
+                if (tokenArr[i] == Token.DO) {
                     hasDo = true
                     break
                 }
 
-                if (i == token && getFirst(tokenArr[i]) != Token.TYPE_IDENTIFIER) {
+                if (i == token && getFirst(tokenArr[i]) != Token.IDENTIFIER) {
                     console.error("rex: error: peek requires at least one identifier before it")
                     process.exit(1)
                 }
 
-                if (getFirst(tokenArr[i]) != Token.TYPE_IDENTIFIER) {
+                if (getFirst(tokenArr[i]) != Token.IDENTIFIER) {
                     console.error("rex: error: only identifiers can be passed to peek")
                     process.exit(1)
                 }
@@ -94,7 +93,6 @@ export default async function (source: string) {
                 bindArray.push(getLast(tokenArr[i]))
 
                 identifierCount++
-                tokenArr[i] = ""
             }
 
             if (!hasDo) {
@@ -102,16 +100,18 @@ export default async function (source: string) {
                 process.exit(1)
             }
 
-            tokenArr[token] = Token.TYPE_BIND + `:${identifierCount}`*/
-        /*} else if (getFirst(tokenArr[token]) == Token.TYPE_IDENTIFIER) {
+            newTokenArr.push(Token.BIND + `:${identifierCount}`)
+            token += identifierCount + 1
+        } else if (getFirst(tokenArr[token]) == Token.IDENTIFIER) {
             const identifier = getLast(tokenArr[token])
             if (bindArray.includes(identifier)) {
-                tokenArr[token] = Token.KEYWORD_PUSH_BIND + ":" + Token.TYPE_IDENTIFIER + ":" + identifier
-            }*/
+                newTokenArr.push(Token.PUSH_BIND + ":" + Token.IDENTIFIER + ":" + identifier)
+            }
         } else {
             newTokenArr.push(tokenArr[token])
         }
     }
     
+    console.log(newTokenArr)
     return newTokenArr
 }
