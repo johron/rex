@@ -6,7 +6,6 @@
   "type": "module",
   "scripts": {
     "start": "bun run src/index.ts",
-    "bundle": "bun build src/index.ts --outfile bundle/rex.js"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
