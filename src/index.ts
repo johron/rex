@@ -4,7 +4,6 @@ import { unlinkSync } from "node:fs";
 const { name, description, version } = require("../package.json")
 
 const argv = process.argv.slice(2)
-// arg example: bun start source.rex output
 
 if (argv.length < 1) {
     console.error("rex: error: no arguments")

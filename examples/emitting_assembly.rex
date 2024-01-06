@@ -1,5 +1,0 @@
-:: Rex program that emits a "push 5" instruction to the output assembly ::
-
-fun main do
-    "push 5" puta
-end
