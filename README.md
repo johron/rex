@@ -6,11 +6,11 @@ Rex is a hobby compiler for learning more about string manipulation and error ha
 <img src="https://raw.githubusercontent.com/johanrong/image-host/main/rex.png" width="128" height="128"/>
 
 ## To-do list
-- [ ] Alternate sections and (functions?) other than _start and .text
+- [ ] Functions and imports
 - [ ] Reading user input
 - [ ] More error handling
 - [ ] Documentation
-- [ ] Better syntax
+- [x] Better syntax
 - [ ] Rewrite in Rex
 
 ## Dependencies
@@ -19,31 +19,31 @@ Rex is a hobby compiler for learning more about string manipulation and error ha
 - [NASM](https://www.nasm.us/)
 - [The GNU linker](https://ftp.gnu.org/old-gnu/Manuals/ld-2.9.1/html_mono/ld.html) (if you're on linux this is probably already available from the "ld" command)
 
-## Bundle from source
+## Bundle
 ```bash
 bun run bundle
 ```
 
-## Run rex compiler
+## Compile
 `source version`
 ```bash
-bun start <source> <output>
+bun start [flag] <input> <output>
 ```
 or
 `bundled version`
 ```bash
-bun run ./rex.js <source> <output>
+bun run ./rex.js [flag] <input> <output>
 ```
-optional arguments:
-`-p: pause` - pauses the compilation step and only outputs the assembly1
+optional flags (only one flag can be used at a time):
+- `-p: pause` - pauses the compilation step and only outputs the assembly
 
 ## Run the executable
 ```bash
-./build/<file>
+./<output>
 ```
-`need executable permissions?`
+`require executable permissions?`
 ```bash
-chmod +x ./build/<file>
+chmod +x <output>
 ```
 
-`This project is currently being written with in bun v1.0.0. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.`
+`This project is currently being written with in bun v1.0.21. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.`
