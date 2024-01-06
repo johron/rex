@@ -43,7 +43,7 @@ optional flags (only one flag can be used at a time):
 ```
 `require executable permissions?`
 ```bash
-chmod +x <output>
+chmod +x ./<output>
 ```
 
 `This project is currently being written with in bun v1.0.21. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.`
