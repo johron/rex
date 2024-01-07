@@ -3,7 +3,7 @@ import isNumeric from "../util/isNumeric"
 import {Token} from "./enum.ts";
 import isIdentifier from "../util/isIdentifier.ts";
 
-function has(check: string, fromArr: string[], startIndex: number) {
+function word(check: string, fromArr: string[], startIndex: number) {
     let checkArr = check.split("")
 
     for (let i = 0; i < checkArr.length; i++) {
@@ -24,7 +24,7 @@ export default function (tokenString: string) {
 
         if (c == "\t" || c == "\f" || c == "\n" || c == "\r" || c == " ") continue
 
-        if (has("::", tokens,  token)) {
+        if (word("::", tokens,  token)) {
             // Comment token found
             for (let i = token; i < tokens.length; i++) {
                 if (tokens[i] == "\n") {
@@ -32,66 +32,63 @@ export default function (tokenString: string) {
                     break
                 }
             }
-        } else if (has("puts", tokens, token)) {
+        } else if (word("puts", tokens, token)) {
             tokenArr.push(Token.PUTS)
             token += 3
-        } else if (has("putn", tokens, token)) {
+        } else if (word("putn", tokens, token)) {
             tokenArr.push(Token.PUTN)
             token += 3
-        } else if (has("puta", tokens, token)) {
+        } else if (word("emit", tokens, token)) {
             tokenArr.push(Token.EMIT)
             token += 3
-        } else if (has("fputs", tokens, token)) {
+        } else if (word("fputs", tokens, token)) {
             tokenArr.push(Token.FPUTS)
             token += 4
-        } else if (has("fputn", tokens, token)) {
+        } else if (word("fputn", tokens, token)) {
             tokenArr.push(Token.FPUTN)
             token += 4
-        } else if (has("swap", tokens, token)) {
+        } else if (word("swap", tokens, token)) {
             tokenArr.push(Token.SWAP)
             token += 3
-        } else if (has("drop", tokens, token)) {
+        } else if (word("drop", tokens, token)) {
             tokenArr.push(Token.DROP)
             token += 3
-        } else if (has("over", tokens, token)) {
+        } else if (word("over", tokens, token)) {
             tokenArr.push(Token.OVER)
             token += 3
-        } else if (has("rot", tokens, token)) {
+        } else if (word("rot", tokens, token)) {
             tokenArr.push(Token.ROT)
             token += 2
-        } else if (has("fun", tokens, token)) {
+        } else if (word("fun", tokens, token)) {
             tokenArr.push(Token.FUN)
             token += 3
-        } else if (has("do", tokens, token)) {
+        } else if (word("do", tokens, token)) {
             tokenArr.push(Token.DO)
             token += 1
-        } else if (has("end", tokens, token)) {
+        } else if (word("end", tokens, token)) {
             tokenArr.push(Token.END)
             token += 2
-        } else if (has("peek", tokens, token)) {
-            tokenArr.push(Token.PEEK)
-            token += 3
-        } else if (has(",", tokens, token)) {
+        } else if (word(",", tokens, token)) {
             tokenArr.push(Token.COMMA)
-        } else if (has(".", tokens, token)) {
+        } else if (word(".", tokens, token)) {
             tokenArr.push(Token.PERIOD)
-        } else if (has("=", tokens, token)) {
+        } else if (word("=", tokens, token)) {
             tokenArr.push(Token.EQUAL)
-        } else if (has("&", tokens, token)) {
+        } else if (word("&", tokens, token)) {
             tokenArr.push(Token.DUP)
-        } else if (has("++", tokens, token)) {
+        } else if (word("++", tokens, token)) {
             tokenArr.push(Token.INC)
             token += 1
-        } else if (has("--", tokens, token)) {
+        } else if (word("--", tokens, token)) {
             tokenArr.push(Token.DEC)
             token += 1
-        } else if (has("+", tokens, token)) {
+        } else if (word("+", tokens, token)) {
             tokenArr.push(Token.ADD)
-        } else if (has("-", tokens, token)) {
+        } else if (word("-", tokens, token)) {
             tokenArr.push(Token.SUB)
-        } else if (has("*", tokens, token)) {
+        } else if (word("*", tokens, token)) {
             tokenArr.push(Token.MUL)
-        } else if (has("/", tokens, token)) {
+        } else if (word("/", tokens, token)) {
             tokenArr.push(Token.DIV)
         } else if (isNumeric(c)) {
             let number = ""

@@ -1,4 +1,4 @@
-import parser, {bindArray} from "../parser.ts"
+import parser from "../parser.ts"
 import { Token } from "../enum.ts"
 import { version } from "../../../package.json";
 import getFirst from "../../util/getFirst.ts";
@@ -167,28 +167,6 @@ export default async function (source: string) {
             const assembly = getLast(currentToken)
             result += `;; -- emit --\n`
             result += "  " + assembly + "\n"
-        } else if (getFirst(currentToken) == Token.BIND) {
-            result += `;; -- bind --\n`
-            result += `mov rax, [ret_stack_rsp]\n`
-            result += `mov [rax], rsp\n`
-            result += `add [ret_stack_rsp], 8\n`
-            
-            for (let i = 0; i < bindArray.length + 1; i++) {
-                result += `mov rbx, [rsp+${i * 8}]\n`
-                result += `mov [rax+${i * 8}], rbx\n`
-            }
-
-            console.log(tokens[token])
-        } else if (GetFirst(currentToken) == Token.PUSH_BIND) {
-            console.log(GetFirst(currentToken))
-            console.log(getMiddle(currentToken))
-            console.log(getLast(currentToken))
-            
-            result += `;; -- push bind --\n`
-            result += `mov rax, [ret_stack_rsp]\n`
-            result += `mov rax, [rax]\n`
-            result += `mov rax, [rax+${bindArray.length * 8}]\n`
-            result += `push rax\n`
         } else {
             if (currentToken == Token.DO || currentToken == Token.END) continue
             
