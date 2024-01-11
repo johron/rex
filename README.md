@@ -3,8 +3,6 @@ Rex is a hobby compiler for learning more about string manipulation and error ha
 
 `ONLY AVAILABLE FOR LINUX`
 
-<img src="https://raw.githubusercontent.com/johanrong/image-host/main/rex.png" width="128" height="128"/>
-
 ## To-do list
 - [ ] Functions and imports
 - [ ] Reading user input
